@@ -1,0 +1,7 @@
+node_modules
+/node_modules
+dist
+scripts
+images
+my_developed_screens_images
+public
