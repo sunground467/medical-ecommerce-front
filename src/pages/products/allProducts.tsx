@@ -14,10 +14,10 @@ const AllProducts = () => {
 	const [limit, setLimit] = useState<number>(5)
 	const [page, setPage] = useState<number>(1)
 
-	const { allProducts, loading } = useAppSelector((state) => state.product)
+	const { allProducts, loading, loaded } = useAppSelector((state) => state.product)
 
 	const setPropValForLink = (val: any) => {
-		navigate(`/single-product/${val}`)
+		navigate(`/single-product/${val?.data?._id}`)
 	}
 
 	const deleteProductVal = (val: string) => {
@@ -48,14 +48,13 @@ const AllProducts = () => {
 		updatedAt: { columnType: ColumnType.DATE }
 	}
 
+	const getProducts = (val: any) => {
+		dispatch(getAllProducts(val?.searchInput, val?.currentPage, val?.limit))
+	}
+
 	useEffect(() => {
-		const handler = setTimeout(() => {
-			dispatch(getAllProducts(search, page, limit))
-		}, 1500)
-		return () => {
-			clearTimeout(handler)
-		}
-	}, [search, page, limit, dispatch])
+		if (!loaded) dispatch(getAllProducts("", 1, 5))
+	}, [loaded])
 
 	return (
 		<div className="grid grid-cols-12 gap-4 p-4">
@@ -68,10 +67,12 @@ const AllProducts = () => {
 					setPropValForLink={setPropValForLink}
 					deleteVal={deleteProductVal}
 					loading={loading}
+					callApi={getProducts}
 					page={page}
 					setPage={setPage}
 					limit={limit}
 					setLimit={setLimit}
+					searchInput={search}
 					setSearchInputVal={setSearch}
 				/>
 			</div>

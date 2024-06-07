@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit"
 const initialState: any = {
 	loading: false,
 	employee: [],
+	employeeLoaded:false,
+	userLoaded:false,
 	users: [],
 	singleUser: []
 }
@@ -26,6 +28,7 @@ const userSlice = createSlice({
 		allEmployeeSuccess(state, action) {
 			state.loading = false
 			state.employee = action.payload
+			state.employeeLoaded =true
 		},
 		allEmployeeFail(state) {
 			state.loading = false
@@ -36,6 +39,7 @@ const userSlice = createSlice({
 		allUsersSuccess(state, action) {
 			state.loading = false
 			state.users = action.payload
+			state.userLoaded =true
 		},
 		allUsersFail(state) {
 			state.loading = false

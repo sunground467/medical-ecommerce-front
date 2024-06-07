@@ -21,6 +21,9 @@ const Table = ({
 	formTitle,
 	submiteFormEvent,
 	loading,
+
+	callApi,
+	searchInput,
 	setSearchInputVal,
 	page,
 	setPage,
@@ -38,6 +41,10 @@ const Table = ({
 	formTitle?: string
 	submiteFormEvent?: Function
 	loading?: boolean
+
+	callApi: Function
+
+	searchInput: string
 	setSearchInputVal: any
 	page: number
 	setPage: any
@@ -97,20 +104,36 @@ const Table = ({
 		}
 	}
 
-	const paginateOverData = () => {
-		return tableData
-	}
+	useEffect(() => {
+		if (searchInput) {
+			const handler = setTimeout(() => {
+				callApi({ searchInput, currentPage: page, limit })
+			}, 1500)
+
+			return () => {
+				clearTimeout(handler)
+			}
+		}
+	}, [searchInput])
+
 	const nextPage = () => {
-		if (page) setPage((prev: number) => prev + 1)
+		if (page) {
+			setPage((prev: number) => prev + 1)
+			const currentPage = page + 1
+			callApi({ searchInput, currentPage, limit })
+		}
 	}
 	const prevPage = () => {
 		if (page && page > 1) {
 			setPage((prev: number) => prev - 1)
+			const currentPage = page - 1
+			callApi({ searchInput, currentPage, limit })
 		}
 	}
 
 	const selectDropFilter = (val: number) => {
 		setLimit(val)
+		callApi({ searchInput, currentPage: page, limit: val })
 	}
 
 	const SubmitTheForm = (form: any) => {
@@ -160,7 +183,9 @@ const Table = ({
 										return (
 											<div
 												onClick={() =>
-													setPropValForLink ? setPropValForLink(flatData[col.propName]) : null
+													setPropValForLink && col.isView
+														? setPropValForLink({ key: col.propName, data: flatData })
+														: null
 												}
 												className={`${col?.className ? col.className : "w-[300px]"} text-center text-sm font-medium ${col?.isView ? "text-blue-500 underline" : "text-gray-500"} `}
 											>
@@ -202,8 +227,8 @@ const Table = ({
 
 	return (
 		<div className="w-full ">
-			<div className={`w-full bg-white  rounded-md mx-auto`}>
-				<div className="flex justify-between items-center px-4 pt-4">
+			<div className={`w-full bg-white rounded-md mx-auto`}>
+				<div className="flex max-sm:flex-col sm:justify-between sm:items-center px-4 pt-4">
 					<div>
 						<p className="p-4 text-gray-400">{title}</p>
 					</div>
@@ -220,7 +245,7 @@ const Table = ({
 				<div className={`w-full overflow-auto ${limit > 5 && tableData.length > 5 ? "h-[95vh]" : "min-h-[350px]"}  `}>
 					{loading ? (
 						<div
-							className={`w-full flex items-center justify-center bg-opacity-70 overflow-auto bg-primary ${limit > 5 && paginateOverData().length > 5 ? "h-[95vh]" : "min-h-[350px]"}  `}
+							className={`w-full flex items-center justify-center bg-opacity-70 overflow-auto bg-primary ${limit > 5 && tableData.length > 5 ? "h-[95vh]" : "min-h-[350px]"}  `}
 						>
 							<DotsLoader />
 						</div>
@@ -255,7 +280,7 @@ const Table = ({
 						</>
 					)}
 				</div>
-				<div className="w-full flex justify-end items-center gap-4">
+				<div className="w-full flex max-sm:flex-col max-sm:p-4 max-sm:items-end   justify-end items-center gap-4">
 					<div>
 						<select
 							onChange={(e) => selectDropFilter(Number(e.target.value))}
@@ -272,7 +297,7 @@ const Table = ({
 							})}
 						</select>
 					</div>
-					<div className="flex p-4 justify-center items-center gap-4">
+					<div className="flex p-4 max-sm:p-0 justify-center items-center gap-4">
 						<button
 							disabled={page === 1}
 							onClick={() => prevPage()}

@@ -7,7 +7,7 @@ export const sideNavSchema: SideNavType[] = [
 		children: [
 			{
 				label: "Dashboard",
-				route: "/dashboard"
+				route: "/"
 			}
 		]
 	},

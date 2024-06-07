@@ -10,40 +10,7 @@ export const addEmployee: FormField[] = [
 		value: "",
         className:'hidden'
 	},
-	{
-		label: "Role",
-		fieldName: "role",
-		inputType: InputType.DROPDOWN,
-		validators: [
-			{
-				type: ValidatorsType.REQUIRED,
-				msg: "Role is Required"
-			}
-		],
-		options: [
-			{
-				label: Role.USER,
-				value: Role.USER
-			},
-			{
-				label: Role.ACCOUNTANT,
-				value: Role.ACCOUNTANT
-			},
-			{
-				label: Role.BDE,
-				value: Role.BDE
-			},
-			{
-				label: Role.DESIGNER,
-				value: Role.DESIGNER
-			},
 
-			{
-				label: Role.MANAGER,
-				value: Role.MANAGER
-			}
-		]
-	},
 	{
 		label: "First Name",
 		fieldName: "firstName",
@@ -96,6 +63,40 @@ export const addEmployee: FormField[] = [
 			{
 				type: ValidatorsType.REQUIRED,
 				msg: "Enter mobile"
+			}
+		]
+	},
+	{
+		label: "Role",
+		fieldName: "role",
+		inputType: InputType.DROPDOWN,
+		validators: [
+			{
+				type: ValidatorsType.REQUIRED,
+				msg: "Role is Required"
+			}
+		],
+		options: [
+			{
+				label: Role.USER,
+				value: Role.USER
+			},
+			{
+				label: Role.ACCOUNTANT,
+				value: Role.ACCOUNTANT
+			},
+			{
+				label: Role.BDE,
+				value: Role.BDE
+			},
+			{
+				label: Role.DESIGNER,
+				value: Role.DESIGNER
+			},
+
+			{
+				label: Role.MANAGER,
+				value: Role.MANAGER
 			}
 		]
 	},

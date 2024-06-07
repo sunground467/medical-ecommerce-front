@@ -2,25 +2,21 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ColumnType } from "../../component/enums/enum"
 import { FormField } from "../../component/interface/all-interface"
-import { updateCatorgyMainTitle } from "../../redux/action/categoryAction"
+import { getAllCategories, getAllSubCategories, updateCatorgyMainTitle } from "../../redux/action/categoryAction"
 import { useAppDispatch, useAppSelector } from "../../redux/store"
 import Table from "../../reusable/table"
 import { updateCategoryTitle, updateSubCategoryForm } from "./form"
 
-const AllStructure = ({
-	setSearch,
-	limit,
-	setLimit,
-	page,
-	setPage,
-	setSubSearch,
-	subLimit,
-	setSubLimit,
-	subPage,
-	setSubPage
-}: any) => {
+const AllStructure = () => {
 	const { allCategoryMainTitle, allSubCategory, loading } = useAppSelector((state) => state.category)
 	const [subcategoryForm, setSubCategoryForm] = useState<FormField[]>(updateSubCategoryForm)
+	const [search, setSearch] = useState<string>("")
+	const [limit, setLimit] = useState<number>(5)
+	const [page, setPage] = useState<number>(1)
+
+	const [subSearch, setSubSearch] = useState<any>("")
+	const [subLimit, setSubLimit] = useState<number>(5)
+	const [subPage, setSubPage] = useState<number>(1)
 
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
@@ -75,6 +71,13 @@ const AllStructure = ({
 		console.log(val)
 	}
 
+	const getCategory = (val: any) => {
+		dispatch(getAllCategories(val?.searchInput, val?.limit, val?.currentPage))
+	}
+	const getSubCategory = (val: any) => {
+		dispatch(getAllSubCategories(val?.searchInput, val?.limit, val?.currentPage))
+	}
+
 	useEffect(() => {
 		const newsubcategoryForm = updateSubCategoryForm.map((field) => {
 			if (!field.options?.length) {
@@ -113,6 +116,8 @@ const AllStructure = ({
 					setPage={setPage}
 					limit={limit}
 					setLimit={setLimit}
+					callApi={getCategory}
+					searchInput={search}
 					setSearchInputVal={setSearch}
 				/>
 			</div>
@@ -133,6 +138,8 @@ const AllStructure = ({
 					setPage={setSubPage}
 					limit={subLimit}
 					setLimit={setSubLimit}
+					callApi={getSubCategory}
+					searchInput={subSearch}
 					setSearchInputVal={setSubSearch}
 				/>
 			</div>

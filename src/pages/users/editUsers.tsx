@@ -35,7 +35,7 @@ const EditUsers = () => {
 			if (field.fieldName === "_id") {
 				return {
 					...field,
-					className: "block col-span-6"
+					className: "block col-span-12 max:sm-col-span-12"
 				}
 			} else {
 				return {
@@ -47,8 +47,8 @@ const EditUsers = () => {
 	}, [])
 
 	return (
-		<div className="grid grid-cols-12  p-10 gap-4 mb-10">
-			<div className={`col-span-12 p-10 bg-white rounded-md`}>
+		<div className="grid grid-cols-12  p-10 max-sm:p-5 gap-4 mb-10">
+			<div className={`col-span-12 p-10 max-sm:p-5 bg-white rounded-md`}>
 				<Form
 					formData={userForm}
 					title="Update User details"

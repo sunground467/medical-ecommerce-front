@@ -17,7 +17,6 @@ export enum ColumnType {
 }
 
 export enum Role {
-
 	USER = "user",
 	MANAGER = "manager",
 	BDE = "bde",
@@ -29,4 +28,11 @@ export enum Role {
 export enum Gender {
 	MALE = "Male",
 	FEMALE = "Female"
+}
+
+export enum ChartTypeEnum {
+	PIE = "pie",
+	BAR = "bar",
+	DOUGHNUT = "doughnut",
+	LINE = "line"
 }

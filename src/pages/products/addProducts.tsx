@@ -68,8 +68,8 @@ const AddProducts = () => {
 		setChildProdForm(updateChilddNewForm)
 	}, [productId, productName])
 	return (
-		<div className="grid grid-cols-12  p-10 gap-4 mb-10">
-			<div className={`col-span-12 p-10 bg-white rounded-md`}>
+		<div className="grid grid-cols-12  p-10 max-sm:p-5 gap-4 mb-10">
+			<div className={`col-span-12 p-10 max-sm:p-5 bg-white rounded-md`}>
 				<Form
 					formData={prodForm}
 					title="Create Product"
@@ -79,7 +79,7 @@ const AddProducts = () => {
 					loading={loading}
 				/>
 			</div>
-			<div className={`col-span-12 p-10 bg-white rounded-md`}>
+			<div className={`col-span-12 p-10 max-sm:p-5 bg-white rounded-md`}>
 				<Form
 					formData={childProdForm}
 					title="Nested child Product"

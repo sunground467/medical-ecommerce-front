@@ -5,7 +5,7 @@ const initialState: any = {
 	categoryLoaded: false,
 	subCategoryLoaded: false,
 	allCategoryMainTitle: [],
-	allSubCategory: []
+	allSubCategory: [],
 }
 
 const categorySlice = createSlice({
@@ -28,8 +28,8 @@ const categorySlice = createSlice({
 		},
 		allCategorySuccess(state, action) {
 			state.loading = false
-			state.categoryLoaded = true
 			state.allCategoryMainTitle = action.payload
+			state.categoryLoaded = true
 		},
 		allCategoryFail(state) {
 			state.loading = false
@@ -49,8 +49,8 @@ const categorySlice = createSlice({
 		},
 		allSubCategorySuccess(state, action) {
 			state.loading = false
-			state.subCategoryLoaded = true
 			state.allSubCategory = action.payload
+			state.subCategoryLoaded = true
 		},
 		allSubCategoryFail(state) {
 			state.loading = false

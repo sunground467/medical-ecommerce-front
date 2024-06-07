@@ -4,13 +4,15 @@ import categorySlice from "./reducer/categoryReducer"
 import productSlice from "./reducer/prouctReducer"
 import commonActionSlice from "./reducer/commonReducer"
 import userSlice from "./reducer/userReducer"
+import orderSlice from "./reducer/orderReducer"
 
 export const store = configureStore({
 	reducer: {
 		category: categorySlice.reducer,
 		product: productSlice.reducer,
 		common: commonActionSlice.reducer,
-		users: userSlice.reducer
+		users: userSlice.reducer,
+		orders: orderSlice.reducer
 	},
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
 })

@@ -6,7 +6,7 @@ import { ColumnType } from "../../component/enums/enum"
 import { useNavigate } from "react-router-dom"
 
 const Employee = () => {
-	const { employee, loading } = useAppSelector((state) => state.users)
+	const { employee, loading, employeeLoaded } = useAppSelector((state) => state.users)
 	const [search, setSearch] = useState<any>("")
 	const [limit, setLimit] = useState<number>(5)
 	const [page, setPage] = useState<number>(1)
@@ -14,7 +14,7 @@ const Employee = () => {
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
 	const setPropValForLink = (val: any) => {
-		navigate(`/single-user/${val}`)
+		navigate(`/single-user/${val?.data?._id}`)
 	}
 
 	const deleteProductVal = (val: string) => {
@@ -47,14 +47,13 @@ const Employee = () => {
 		updatedAt: { columnType: ColumnType.DATE }
 	}
 
+	const getEmployee = (val: any) => {
+		dispatch(allEmployeeFunc(val?.searchInput, val?.currentPage, val?.limit))
+	}
+
 	useEffect(() => {
-		const handler = setTimeout(() => {
-			dispatch(allEmployeeFunc(search, page, limit))
-		}, 1500)
-		return () => {
-			clearTimeout(handler)
-		}
-	}, [search, page, limit, dispatch])
+		if (!employeeLoaded) dispatch(allEmployeeFunc("", 1, 5))
+	}, [employeeLoaded])
 	return (
 		<div className="grid grid-cols-12 gap-4 p-4">
 			<div className="col-span-12">
@@ -66,10 +65,12 @@ const Employee = () => {
 					setPropValForLink={setPropValForLink}
 					deleteVal={deleteProductVal}
 					loading={loading}
+					callApi={getEmployee}
 					page={page}
 					setPage={setPage}
 					limit={limit}
 					setLimit={setLimit}
+					searchInput={search}
 					setSearchInputVal={setSearch}
 				/>
 			</div>

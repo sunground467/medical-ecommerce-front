@@ -7,7 +7,8 @@ const initialState: any = {
 	productName: "",
 	allProducts: [],
 	singleProduct: [],
-	expiredProduct: []
+	expiredProduct: [],
+	loaded:false
 }
 
 const productSlice = createSlice({
@@ -32,8 +33,10 @@ const productSlice = createSlice({
 		getAllProductListSuccess(state, action) {
 			state.loading = false
 			state.allProducts = action.payload
+			state.loaded=true
 		},
 		getAllProductListFail(state) {
+			state.loaded=false
 			state.loading = false
 		},
 		getSingleProductListStart(state) {

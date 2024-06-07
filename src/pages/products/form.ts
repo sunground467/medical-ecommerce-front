@@ -64,6 +64,7 @@ export const productForm: FormField[] = [
 		label: "Is Discount",
 		fieldName: "isDiscount",
 		inputType: InputType.DROPDOWN,
+		className:'col-span-12',
 		options: [
 			{
 				label: "Yes",
@@ -111,7 +112,6 @@ export const productForm: FormField[] = [
 		inputType: InputType.NUMBER,
 		placeHolder: "Enter Selling Price",
 		value: "",
-		className: "col-span-12",
 		validators: [
 			{
 				type: ValidatorsType.REQUIRED,

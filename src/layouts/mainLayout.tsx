@@ -1,11 +1,14 @@
 import { Outlet, useNavigate } from "react-router-dom"
 import Header from "./header"
 import SideNav from "./sideNav"
-import { useEffect } from "react"
-import { useAppDispatch } from "../redux/store"
+import { useEffect, useState } from "react"
+import { useAppDispatch, useAppSelector } from "../redux/store"
 import { getAllCategories, getAllSubCategories } from "../redux/action/categoryAction"
 
-const MainLayout = ({ search, limit, page, subSearch, subLimit, subPage }: any) => {
+const MainLayout = () => {
+	const { categoryLoaded, subCategoryLoaded } = useAppSelector((state) => state.category)
+	const [toggle, setToggle] = useState<boolean>(false)
+
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
 	const returnDispatchFunc = (func: any) => {
@@ -13,31 +16,37 @@ const MainLayout = ({ search, limit, page, subSearch, subLimit, subPage }: any) 
 		if (!accessToken) {
 			navigate("/login")
 		} else {
-			const handler = setTimeout(() => {
-				dispatch(func)
-			}, 1500)
-
-			return () => {
-				clearTimeout(handler)
-			}
+			dispatch(func)
 		}
 	}
 	useEffect(() => {
-		const cleanup = returnDispatchFunc(getAllCategories(search, limit, page))
-		return cleanup
-	}, [search, limit, page, dispatch, navigate])
+		if (!categoryLoaded) returnDispatchFunc(getAllCategories("", 100, 1))
+	}, [categoryLoaded])
 	useEffect(() => {
-		const cleanup = returnDispatchFunc(getAllSubCategories(subSearch, subLimit, subPage))
-		return cleanup
-	}, [navigate, dispatch, subSearch, subLimit, subPage])
+		if (!subCategoryLoaded) returnDispatchFunc(getAllSubCategories("", 100, 1))
+	}, [subCategoryLoaded])
+
+	useEffect(() => {
+		const handleResize = () => {
+			if (window.innerWidth < 800) {
+				return setToggle(true)
+			}
+			return setToggle(false)
+		}
+		handleResize()
+		window.addEventListener("resize", handleResize)
+		return () => {
+			window.removeEventListener("resize", handleResize)
+		}
+	}, [])
 
 	return (
-		<div className="grid grid-cols-12  ">
-			<div className="col-span-2  max-xl:col-span-3">
+		<div className="w-[100vw] flex">
+			<div className={`${toggle ? "hidden" : "w-[250px]"} `}>
 				<SideNav />
 			</div>
-			<div className="col-span-10 max-xl:col-span-9">
-				<Header />
+			<div className={`${toggle ? "w-[100vw]" : "setWidth"}`}>
+				<Header setToggle={setToggle} />
 				<div className={`h-[96.3vh] overflow-y-scroll bg-gray-200`}>
 					<Outlet />
 				</div>

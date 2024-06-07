@@ -11,8 +11,8 @@ const AddEmploye = () => {
 		dispatch(addEmployeeFunc(form))
 	}
 	return (
-		<div className="grid grid-cols-12  p-10 gap-4 mb-10">
-			<div className={`col-span-12 p-10 bg-white rounded-md`}>
+		<div className="grid grid-cols-12  p-10 max-sm:p-5 gap-4 mb-10">
+			<div className={`col-span-12 p-10 max-sm:p-5 bg-white rounded-md`}>
 				<Form
 					formData={addEmployee}
 					title="Add Employee"

@@ -12,8 +12,7 @@
 * {
 	font-family: "Poppins-regular";
 	font-weight: 400;
-	/* user-select: none; */
-	letter-spacing: 0.05em;
+	letter-spacing: 0.1em;
 }
 
 body {
@@ -25,6 +24,9 @@ input::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 }
 
+.setWidth {
+	width: calc(100vw - 250px);
+}
 
 .ani-delay-50 {
 	animation-delay: 500ms;
@@ -34,7 +36,6 @@ input::-webkit-inner-spin-button {
 	animation-delay: 1000ms;
 }
 .hideScrollbar {
-	
 	scrollbar-width: thin;
 	scrollbar-color: transparent;
 	overflow-y: scroll;

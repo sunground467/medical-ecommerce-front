@@ -122,7 +122,7 @@ const Form = ({
 					<select
 						value={form[field.fieldName] || field.value || ""}
 						onChange={(e) => setForm((prev) => ({ ...prev, [field.fieldName]: e.target.value }))}
-						className="border-2 text-gray-400 text-sm outline-none bg-transparent p-2 rounded-md"
+						className="border-2 border-gray-300 text-gray-400 text-sm outline-none bg-transparent p-2 rounded-md"
 					>
 						<option className="text-gray-400 text-sm" value="">
 							select {field.label}
@@ -140,13 +140,9 @@ const Form = ({
 			)
 		} else {
 			return (
-				<div className="flex flex-col gap-2">
-					<label className="text-gray-400 text-sm" htmlFor={field.label}>
-						{field.label}{" "}
-					</label>
+				<div className="flex relative z-0 flex-col gap-2 group">
 					<input
 						type={field.inputType}
-						placeholder={field.placeHolder}
 						value={field.inputType !== InputType.IMAGE ? form[field.fieldName] || field.value || "" : undefined}
 						onChange={(e) => {
 							if (InputType.IMAGE !== inputType && field.pattern) {
@@ -162,8 +158,13 @@ const Form = ({
 								setErrors((prev) => ({ ...prev, [field.fieldName]: "" }))
 							}
 						}}
-						className="border-2 text-gray-400 text-sm outline-none bg-transparent p-2 rounded-md"
+						className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-300 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+						placeholder=" "
 					/>
+					<label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+						{field.label}
+					</label>
+
 					<p className="text-red-500 text-sm"> {showError && errors[field.fieldName]} </p>
 				</div>
 			)
@@ -175,7 +176,7 @@ const Form = ({
 			<div className="grid grid-cols-12 gap-4">
 				{formData.map((field: FormField, i: number) => {
 					return (
-						<div key={i} className={`${field?.className ? field?.className : "col-span-6"}`}>
+						<div key={i} className={`${field?.className ? field?.className : "col-span-6 max-sm:col-span-12"}`}>
 							{(() => {
 								switch (field.inputType) {
 									case InputType.TEXT:

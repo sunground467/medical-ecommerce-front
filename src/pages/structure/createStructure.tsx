@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/store"
 import Form from "../../reusable/form"
 import { createCategoryTitle, createSubCategoryForm } from "./form"
 
-const CreateStructure = ({search,limit,page}:any) => {
+const CreateStructure = () => {
 	const { allCategoryMainTitle } = useAppSelector((state) => state.category)
 	const [subcategoryForm, setSubCategoryForm] = useState<FormField[]>(createSubCategoryForm)
 	const dispatch = useAppDispatch()
@@ -29,8 +29,6 @@ const CreateStructure = ({search,limit,page}:any) => {
 		dispatch(createCatorgyMainTitle(categoryTitle))
 	}
 
-	
-
 	useEffect(() => {
 		const newsubcategoryForm = subcategoryForm.map((field) => {
 			if (!field.options?.length) {
@@ -50,8 +48,8 @@ const CreateStructure = ({search,limit,page}:any) => {
 		setSubCategoryForm(newsubcategoryForm)
 	}, [allCategoryMainTitle.length])
 	return (
-		<div className="grid grid-cols-12  p-10 gap-4 mb-10">
-			<div className={`col-span-12 p-10 bg-white rounded-md`}>
+		<div className="grid grid-cols-12  p-10 max-sm:p-5 gap-4 mb-10">
+			<div className={`col-span-12 p-10 max-sm:p-5 bg-white rounded-md`}>
 				<Form
 					formData={createCategoryTitle}
 					title="Create Category title"
@@ -59,8 +57,8 @@ const CreateStructure = ({search,limit,page}:any) => {
 					submiteFormEvent={submiteCategoryFormEvent}
 				/>
 			</div>
-			<div className={`col-span-12 p-10 relative bg-white rounded-md`}>
-				<button onClick={() => dispatch(getAllCategories(search,limit,page))} className="absolute right-5 top-4">
+			<div className={`col-span-12 p-10 max-sm:p-5 relative bg-white rounded-md`}>
+				<button onClick={() => dispatch(getAllCategories('', 100, 1))} className="absolute right-5 top-4">
 					<IoIosRefresh fontSize={25} color="blue" />
 				</button>
 				<Form
