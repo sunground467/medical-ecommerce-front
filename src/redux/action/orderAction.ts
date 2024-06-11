@@ -3,6 +3,9 @@ import {
 	allOrdersFail,
 	allOrdersStart,
 	allOrdersSuccess,
+	getOrderByWeeksFail,
+	getOrderByWeeksStart,
+	getOrderByWeeksSuccess,
 	ordersCountFail,
 	ordersCountStart,
 	ordersCountSuccess,
@@ -84,5 +87,22 @@ export const updateOrderStatus =
 			if (data) dispatch(updateOrderStatusSuccess())
 		} catch (error) {
 			dispatch(updateOrderStatusFail())
+		}
+	}
+
+export const getOrdersByWeeks =
+	(dateArray: any[]) =>
+	async (
+		dispatch: (args0: {
+			payload: string | undefined
+			type: "order/getOrderByWeeksStart" | "order/getOrderByWeeksSuccess" | "order/getOrderByWeeksFail"
+		}) => void
+	) => {
+		try {
+			dispatch(getOrderByWeeksStart())
+			const { data } = await axiosInstance.post("/get-allOrders-by-weeks", { dateArray })
+			dispatch(getOrderByWeeksSuccess({ pending: data?.pending, delivered: data?.delivered, ongoing: data?.ongoing }))
+		} catch (error) {
+			dispatch(getOrderByWeeksFail())
 		}
 	}

@@ -3,7 +3,19 @@ import { Bar, Line, Doughnut, Pie } from "react-chartjs-2"
 import { ChartTypeEnum } from "../component/enums/enum"
 import { useEffect } from "react"
 ChartJS.register(...registerables)
-const Chart = ({ title, chartName, height, chartData }: { title: string; chartName: string; height: string; chartData: any }) => {
+const Chart = ({
+	title,
+	chartName,
+	height,
+	chartData,
+	labelValue
+}: {
+	title: string
+	chartName: string
+	height: string
+	chartData: any
+	labelValue?: boolean
+}) => {
 	const textCenter = {
 		id: "textCenter",
 		beforeDatasetsDraw(chart: any) {
@@ -36,7 +48,7 @@ const Chart = ({ title, chartName, height, chartData }: { title: string; chartNa
 					options={{
 						maintainAspectRatio: false,
 						responsive: true,
-						plugins: { legend: { display: false } }
+						plugins: { legend: { display: labelValue ? labelValue : false } }
 					}}
 				/>
 			)

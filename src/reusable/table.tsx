@@ -3,11 +3,12 @@ import { CiEdit, CiSearch } from "react-icons/ci"
 import { FaCheck } from "react-icons/fa6"
 import { MdOutlineDelete } from "react-icons/md"
 import { RxCross1 } from "react-icons/rx"
-import { ColumnType } from "../component/enums/enum"
+import { ColumnType, orderStatus } from "../component/enums/enum"
 import { ColumnHeader, FormField } from "../component/interface/all-interface"
 import { dateFormat, titleCasePipe } from "../pipes/pipes"
 import Form from "./form"
 import { DotsLoader } from "./DotsLoader"
+import { useLocation } from "react-router-dom"
 
 const Table = ({
 	title,
@@ -51,10 +52,12 @@ const Table = ({
 	limit: number
 	setLimit: any
 }) => {
-	const [dropFilter] = useState<number[]>([5, 10, 25, 100])
+	const [dropFilter] = useState<number[]>([ 10, 25,50, 100])
 	const [openModal, seTOpenModal] = useState<boolean>(false)
 	const [openEditModal, seTOpenEditModal] = useState<boolean>(false)
 	const [valueData, SetValueData] = useState<any>({})
+
+	const location = useLocation()
 
 	useEffect(() => {
 		filterDataFunc()
@@ -143,13 +146,25 @@ const Table = ({
 		}
 	}
 
+	const getBackgroundColor = (dateString: string, status: string) => {
+		const today = new Date()
+		const todayString = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
+		const itemDate = new Date(dateString)
+		const itemDateString = `${itemDate.getFullYear()}-${itemDate.getMonth() + 1}-${itemDate.getDate()}`
+		const bgColor = itemDateString === todayString && status === orderStatus.PENDING ? "bg-gray-300" : ""
+		return bgColor
+	}
+
 	const returnAllTableData = (data: any, i: number) => {
 		const flatData = flattenObject(data)
 
 		return (
-			<tr key={i}>
+			<tr
+				className={`${location.pathname === "/all-orders" ? getBackgroundColor(flatData["createdAt"], flatData["orderStatus"]) : null}`}
+				key={i}
+			>
 				{columnHeader.map((col, colIndex) => (
-					<td className={`border `} key={colIndex}>
+					<td className={`border`} key={colIndex}>
 						<div>
 							{(() => {
 								switch (col.columnType) {

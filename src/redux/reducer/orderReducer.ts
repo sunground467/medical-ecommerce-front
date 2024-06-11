@@ -4,7 +4,8 @@ const initialState: any = {
 	loading: false,
 	allOrders: [],
 	ordersCount: {},
-	createdAtData: {}
+	createdAtData: {},
+	perWeekOrder: {}
 }
 
 const orderSlice = createSlice({
@@ -50,6 +51,17 @@ const orderSlice = createSlice({
 		},
 		updateOrderStatusFail(state) {
 			state.loading = false
+		},
+		getOrderByWeeksStart(state) {
+			state.loading = true
+			state.perWeekOrder = {}
+		},
+		getOrderByWeeksSuccess(state, action) {
+			state.loading = false
+			state.perWeekOrder = action.payload
+		},
+		getOrderByWeeksFail(state) {
+			state.loading = false
 		}
 	}
 })
@@ -66,7 +78,10 @@ export const {
 	returnCreatedAtDataFail,
 	updateOrderStatusStart,
 	updateOrderStatusSuccess,
-	updateOrderStatusFail
+	updateOrderStatusFail,
+	getOrderByWeeksStart,
+	getOrderByWeeksSuccess,
+	getOrderByWeeksFail,
 } = orderSlice.actions
 
 export default orderSlice
