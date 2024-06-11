@@ -110,7 +110,7 @@ const AllOrders = () => {
 					setSearchInputVal={setSearch}
 				/>
 			</div>
-			<div className="col-span-6 relative">
+			<div className=" col-span-6 max-lg:col-span-12 relative">
 				<Chart
 					title="Orders Status In weeks "
 					chartName="line"
@@ -131,7 +131,7 @@ const AllOrders = () => {
 					</select>
 				</div>
 			</div>
-			<div className="col-span-6 relative">
+			<div className=" col-span-6 max-lg:col-span-12 relative">
 				<Chart
 					title="Total Orders Delivered In Months "
 					chartName="line"

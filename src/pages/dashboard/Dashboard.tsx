@@ -67,19 +67,19 @@ const Dashboard = () => {
 				icon: <FaThumbsUp color="green" fontSize={25} />,
 				label: "Delivered",
 				colorCode: "green",
-				value: ((ordersCount?.deliveredOrders * 100) / ordersCount?.totalOrders).toFixed(0)
+				value: Number(((ordersCount?.deliveredOrders * 100) / ordersCount?.totalOrders).toFixed(0))
 			},
 			{
 				icon: <FaTimesCircle color="#6A45FE" fontSize={25} />,
 				label: "Canceled",
 				colorCode: "#6A45FE",
-				value: ((ordersCount?.cancelOrders * 100) / ordersCount?.totalOrders).toFixed(0)
+				value: Number(((ordersCount?.cancelOrders * 100) / ordersCount?.totalOrders).toFixed(0))
 			},
 			{
 				icon: <FaTimesCircle color="red" fontSize={25} />,
 				label: "Rejected",
 				colorCode: "red",
-				value: ((ordersCount?.rejectOrders * 100) / ordersCount?.totalOrders).toFixed(0)
+				value: Number(((ordersCount?.rejectOrders * 100) / ordersCount?.totalOrders).toFixed(0))
 			}
 		])
 		setOverView([
@@ -226,7 +226,7 @@ const Dashboard = () => {
 						</div>
 						<div className="w-full">
 							<p className="text-black opacity-70 text-[15px]">
-								{d?.label} ({d?.value})%
+								{d?.label} ({isNaN(d?.value) ? 0 : d?.value})%
 							</p>
 							<div className="w-[100%] h-3 rounded-full bg-gray-200">
 								<div

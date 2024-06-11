@@ -17,6 +17,7 @@ const Login = () => {
 	useEffect(() => {
 		const accessToken = JSON.parse(localStorage.getItem("token") as string)
 		if (accessToken) navigate("/")
+			else navigate("/login")
 	}, [])
 	return (
 		<div className="flex justify-center items-center h-[100vh] bg-gray-200">

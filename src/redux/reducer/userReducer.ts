@@ -31,7 +31,7 @@ const userSlice = createSlice({
 		},
 		allEmployeeSuccess(state, action) {
 			state.loading = false
-			state.employee = action.payload
+			state.employee = action.payload.allEmployee
 			state.employeeMale = action.payload.male
 			state.employeeFemale = action.payload.female
 			state.employeeLoaded = true

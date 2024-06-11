@@ -25,7 +25,14 @@ const App = () => {
 			<ToastContainer />
 			<Router basename="/">
 				<Routes>
-					<Route path="login" element={<Login />} />
+					<Route
+						path="login"
+						element={
+							<Suspense fallback={<div className="h-full bg-gray-200"></div>}>
+								<Login />
+							</Suspense>
+						}
+					/>
 					<Route path="/" element={<MainLayout />}>
 						{/* MainLayout component */}
 						<Route
