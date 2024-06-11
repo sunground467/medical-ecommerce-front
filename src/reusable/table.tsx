@@ -316,8 +316,8 @@ const Table = ({
 			</div>
 
 			{openEditModal && formTitle && formData ? (
-				<div className="w-full h-[100vh] bg-black  top-0 left-0 fixed bg-opacity-30 flex justify-center items-center">
-					<div className="w-[500px] bg-white p-4 z-10 rounded-md relative h-fit">
+				<div className="w-full h-[100vh] bg-black z-[100] top-0 left-0 fixed bg-opacity-30 flex justify-center items-center">
+					<div className="w-[500px] bg-white p-4 z-[200] rounded-md relative h-fit">
 						<button
 							onClick={() => seTOpenEditModal(false)}
 							className="bg-red-500 absolute p-1 top-1 right-2 w-10 h-10 rounded-full px-4 text-white"

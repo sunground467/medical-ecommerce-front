@@ -123,7 +123,7 @@ export const updateSingleProductList =
 	}
 
 export const getExpiredProduct =
-	(date: number) =>
+	(date: number, page: number, limit: number) =>
 	async (
 		dispatch: (args0: {
 			payload: string | undefined
@@ -132,7 +132,7 @@ export const getExpiredProduct =
 	) => {
 		try {
 			dispatch(getExpiredProductStart())
-			const { data } = await axiosInstance.post(`/getExpiredProduct`, { date })
+			const { data } = await axiosInstance.post(`/getExpiredProduct?page=${page}&limit=${limit}`, { date })
 
 			if (data) dispatch(getExpiredProductSuccess(data?.expiredProduct))
 		} catch (error) {

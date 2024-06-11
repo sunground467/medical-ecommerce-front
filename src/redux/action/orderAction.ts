@@ -8,7 +8,10 @@ import {
 	ordersCountSuccess,
 	returnCreatedAtDataFail,
 	returnCreatedAtDataStart,
-	returnCreatedAtDataSuccess
+	returnCreatedAtDataSuccess,
+	updateOrderStatusFail,
+	updateOrderStatusStart,
+	updateOrderStatusSuccess
 } from "../reducer/orderReducer"
 
 export const getAllOrders =
@@ -32,7 +35,7 @@ export const getAllOrders =
 	}
 
 export const getAllOrdersCount =
-	() =>
+	(startDate: any, endDate: any) =>
 	async (
 		dispatch: (arg0: {
 			payload: string | undefined
@@ -42,7 +45,7 @@ export const getAllOrdersCount =
 		try {
 			dispatch(ordersCountStart())
 
-			const { data } = await axiosInstance.get("/order-status-count")
+			const { data } = await axiosInstance.get(`/order-status-count/${startDate}/${endDate}`)
 			if (data) dispatch(ordersCountSuccess(data?.results))
 		} catch (error) {
 			dispatch(ordersCountFail())
@@ -64,5 +67,22 @@ export const returnCreatedAtData =
 			if (data) dispatch(returnCreatedAtDataSuccess(data?.createdAtData))
 		} catch (error) {
 			dispatch(returnCreatedAtDataFail())
+		}
+	}
+
+export const updateOrderStatus =
+	(form: any) =>
+	async (
+		dispatch: (args0: {
+			payload: string | undefined
+			type: "order/updateOrderStatusStart" | "order/updateOrderStatusSuccess" | "order/updateOrderStatusFail"
+		}) => void
+	) => {
+		try {
+			dispatch(updateOrderStatusStart())
+			const { data } = await axiosInstance.patch(`/admin-update-order/${form?.id}`, form)
+			if (data) dispatch(updateOrderStatusSuccess())
+		} catch (error) {
+			dispatch(updateOrderStatusFail())
 		}
 	}

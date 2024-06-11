@@ -6,7 +6,10 @@ import { DotsLoader } from "../../reusable/DotsLoader"
 
 const ExpiredProducts = () => {
 	const { expiredProduct, loading } = useAppSelector((state) => state.product)
-	const [index, setIndex] = useState<number>()
+	const [index, setIndex] = useState<number>(0)
+
+	const [page, setPage] = useState<number>(1)
+	const [limit, setLimit] = useState<number>(10)
 
 	const dispatch = useAppDispatch()
 	const [expireState] = useState<any[]>([
@@ -30,12 +33,17 @@ const ExpiredProducts = () => {
 
 	const getExpiryData = (i: number) => {
 		setIndex(i)
-		dispatch(getExpiredProduct(expireState[i]?.value))
+		dispatch(getExpiredProduct(expireState[i]?.value, page, limit))
 	}
 
 	useEffect(() => {
+		if (page && limit) {
+			dispatch(getExpiredProduct(expireState[index]?.value, page, limit))
+		}
+	}, [page, limit])
+
+	useEffect(() => {
 		getExpiryData(0)
-		setIndex(0)
 	}, [])
 
 	return (
@@ -73,6 +81,32 @@ const ExpiredProducts = () => {
 					{" "}
 					{!loading && !expiredProduct.length ? "No Data found" : null}
 				</p>
+			</div>
+			<div className="w-full flex justify-end ">
+				<div className="flex gap-4 justify-center items-center px-4">
+					<p>Per page data</p>
+					<select
+						onChange={(e) => setLimit(Number(e.target.value))}
+						className="w-[70px] outline-none text-center"
+						name=""
+						id=""
+					>
+						<option value="10">10</option>
+						<option value="25">25</option>
+						<option value="50">50</option>
+						<option value="100">100</option>
+					</select>
+					<button
+						onClick={() => (page > 1 ? setPage((prev) => prev - 1) : 1)}
+						className="bg-primary px-6 py-1 rounded-md text-white"
+					>
+						Prev
+					</button>
+					<p className="w-[50px] text-center">{page}</p>
+					<button onClick={() => setPage((prev) => prev + 1)} className="bg-primary px-6 py-1 rounded-md text-white">
+						Next
+					</button>
+				</div>
 			</div>
 		</div>
 	)

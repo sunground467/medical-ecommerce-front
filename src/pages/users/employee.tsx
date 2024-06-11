@@ -2,11 +2,13 @@ import { useEffect, useState } from "react"
 import { allEmployeeFunc } from "../../redux/action/userAction"
 import { useAppDispatch, useAppSelector } from "../../redux/store"
 import Table from "../../reusable/table"
-import { ColumnType } from "../../component/enums/enum"
+import { ChartTypeEnum, ColumnType } from "../../component/enums/enum"
 import { useNavigate } from "react-router-dom"
+import Chart from "../../reusable/chart"
+import { maleFemaleDate } from "./chart"
 
 const Employee = () => {
-	const { employee, loading, employeeLoaded } = useAppSelector((state) => state.users)
+	const { employee, loading, employeeLoaded ,employeeMale,employeeFemale} = useAppSelector((state) => state.users)
 	const [search, setSearch] = useState<any>("")
 	const [limit, setLimit] = useState<number>(5)
 	const [page, setPage] = useState<number>(1)
@@ -55,7 +57,7 @@ const Employee = () => {
 		if (!employeeLoaded) dispatch(allEmployeeFunc("", 1, 5))
 	}, [employeeLoaded])
 	return (
-		<div className="grid grid-cols-12 gap-4 p-4">
+		<div className="grid grid-cols-12 gap-4 pb-20 p-4">
 			<div className="col-span-12">
 				<Table
 					title="All products"
@@ -72,6 +74,14 @@ const Employee = () => {
 					setLimit={setLimit}
 					searchInput={search}
 					setSearchInputVal={setSearch}
+				/>
+			</div>
+			<div className="col-span-12">
+				<Chart
+					chartName={ChartTypeEnum.DOUGHNUT}
+					height="h-[450px]"
+					title="Total employee Male and Female" 
+					chartData={maleFemaleDate(employeeMale, employeeFemale)}
 				/>
 			</div>
 		</div>

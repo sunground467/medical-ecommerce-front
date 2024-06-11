@@ -1,6 +1,7 @@
 import { Chart as ChartJS, registerables } from "chart.js"
 import { Bar, Line, Doughnut, Pie } from "react-chartjs-2"
 import { ChartTypeEnum } from "../component/enums/enum"
+import { useEffect } from "react"
 ChartJS.register(...registerables)
 const Chart = ({ title, chartName, height, chartData }: { title: string; chartName: string; height: string; chartData: any }) => {
 	const textCenter = {
@@ -69,6 +70,12 @@ const Chart = ({ title, chartName, height, chartData }: { title: string; chartNa
 			)
 		}
 	}
+
+	useEffect(() => {
+		if (chartData) {
+			createChartType()
+		}
+	}, [chartData])
 
 	return (
 		<div className={`w-full p-4 ${height} pb-8 rounded-md bg-white`}>

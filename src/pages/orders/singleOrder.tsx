@@ -2,9 +2,16 @@ import { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { dateFormat, titleCasePipe } from "../../pipes/pipes"
 import { ColumnType } from "../../component/enums/enum"
+import Form from "../../reusable/form"
+import { FormField } from "../../component/interface/all-interface"
+import { updatedOrderForm } from "./form"
+import { useAppDispatch, useAppSelector } from "../../redux/store"
+import { updateOrderStatus } from "../../redux/action/orderAction"
 
 const SingleOrder = () => {
 	const location = useLocation()
+	const [orderForm, setOrderForm] = useState<FormField[]>(updatedOrderForm)
+	const { loading } = useAppSelector((state) => state.orders)
 	const [obj, setObj] = useState({
 		_id: "",
 		prescriptionImg: ColumnType.IMAGE,
@@ -25,6 +32,37 @@ const SingleOrder = () => {
 		updatedAt: ColumnType.DATE,
 		orderItems: []
 	})
+	const dispatch = useAppDispatch()
+
+	const updateOrder = (form: any) => {
+		dispatch(updateOrderStatus(form))
+	}
+
+	useEffect(() => {
+		const updatedForm = orderForm.map((o) => {
+			if (o.fieldName === "id") {
+				return {
+					...o,
+					value: location.state?._id
+				}
+			} else if (o.fieldName === "orderStatus") {
+				return {
+					...o,
+					value: location.state?.orderStatus
+				}
+			} else if (o.fieldName === "paymentStatus") {
+				return {
+					...o,
+					value: location.state?.paymentStatus
+				}
+			} else {
+				return {
+					...o
+				}
+			}
+		})
+		setOrderForm(updatedForm)
+	}, [location.state])
 
 	useEffect(() => {
 		const updateObj = {
@@ -81,6 +119,17 @@ const SingleOrder = () => {
 					)}
 				</div>
 			))}
+
+			<div className="col-span-12">
+				<Form
+					formData={orderForm}
+					title="Update order details"
+					loading={loading}
+					btnName="Update"
+					submiteFormEvent={updateOrder}
+					takeFieldValue={true}
+				/>
+			</div>
 		</div>
 	)
 }

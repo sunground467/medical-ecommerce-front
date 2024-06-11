@@ -36,3 +36,20 @@ export enum ChartTypeEnum {
 	DOUGHNUT = "doughnut",
 	LINE = "line"
 }
+
+export enum orderStatus {
+	PENDING = "pending",
+	CONFIRMED = "confirmed",
+	ONGOING = "ongoing",
+	DELIVERED = "delivered",
+	CANCELED = "canceled",
+	RETURNED = "returned",
+	REJECTED = "rejected"
+}
+export enum paymentStatus {
+	PROCESSING = "processing",
+	PAID = "paid",
+	CANCEL = "cancel",
+	RETURNED = "returned",
+	REJECTED = "rejected"
+}

@@ -1,18 +1,18 @@
 import axiosInstance from "../../component/interceptor/interceptor"
 import { FormField } from "../../component/interface/all-interface"
 import {
-    addEmployeeFail,
-    addEmployeeStart,
-    addEmployeeSuccess,
-    allEmployeeFail,
-    allEmployeeStart,
-    allEmployeeSuccess,
-    allUsersFail,
-    allUsersStart,
-    allUsersSuccess,
-    singleUserFail,
-    singleUserStart,
-    singleUserSuccess
+	addEmployeeFail,
+	addEmployeeStart,
+	addEmployeeSuccess,
+	allEmployeeFail,
+	allEmployeeStart,
+	allEmployeeSuccess,
+	allUsersFail,
+	allUsersStart,
+	allUsersSuccess,
+	singleUserFail,
+	singleUserStart,
+	singleUserSuccess
 } from "../reducer/userReducer"
 
 export const addEmployeeFunc =
@@ -61,7 +61,7 @@ export const allEmployeeFunc =
 					profileImg: emp.profileImg.URL,
 					prescriptionImg: emp.prescriptionImg.URL
 				}))
-				dispatch(allEmployeeSuccess(allEmployee))
+				dispatch(allEmployeeSuccess({allEmployee,female: data?.female, male: data?.male}))
 			}
 		} catch (error) {
 			dispatch(allEmployeeFail())
@@ -88,7 +88,7 @@ export const allUsersFunc =
 					profileImg: emp.profileImg.URL,
 					prescriptionImg: emp.prescriptionImg.URL
 				}))
-				dispatch(allUsersSuccess(allUsers))
+				dispatch(allUsersSuccess({ allUsers, female: data?.female, male: data?.male }))
 			}
 		} catch (error) {
 			dispatch(allUsersFail())

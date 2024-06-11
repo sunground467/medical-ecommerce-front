@@ -23,6 +23,7 @@ const orderSlice = createSlice({
 		},
 		ordersCountStart(state) {
 			state.loading = true
+			state.ordersCount = {}
 		},
 		ordersCountSuccess(state, action) {
 			state.loading = false
@@ -40,6 +41,15 @@ const orderSlice = createSlice({
 		},
 		returnCreatedAtDataFail(state) {
 			state.loading = false
+		},
+		updateOrderStatusStart(state) {
+			state.loading = true
+		},
+		updateOrderStatusSuccess(state) {
+			state.loading = false
+		},
+		updateOrderStatusFail(state) {
+			state.loading = false
 		}
 	}
 })
@@ -53,7 +63,10 @@ export const {
 	ordersCountFail,
 	returnCreatedAtDataStart,
 	returnCreatedAtDataSuccess,
-	returnCreatedAtDataFail
+	returnCreatedAtDataFail,
+	updateOrderStatusStart,
+	updateOrderStatusSuccess,
+	updateOrderStatusFail
 } = orderSlice.actions
 
 export default orderSlice

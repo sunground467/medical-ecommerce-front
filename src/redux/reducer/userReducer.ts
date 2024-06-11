@@ -3,9 +3,13 @@ import { createSlice } from "@reduxjs/toolkit"
 const initialState: any = {
 	loading: false,
 	employee: [],
-	employeeLoaded:false,
-	userLoaded:false,
+	employeeLoaded: false,
+	employeeMale: 0,
+	employeeFemale: 0,
+	userLoaded: false,
 	users: [],
+	userMale: 0,
+	userFemale: 0,
 	singleUser: []
 }
 
@@ -28,7 +32,9 @@ const userSlice = createSlice({
 		allEmployeeSuccess(state, action) {
 			state.loading = false
 			state.employee = action.payload
-			state.employeeLoaded =true
+			state.employeeMale = action.payload.male
+			state.employeeFemale = action.payload.female
+			state.employeeLoaded = true
 		},
 		allEmployeeFail(state) {
 			state.loading = false
@@ -38,8 +44,10 @@ const userSlice = createSlice({
 		},
 		allUsersSuccess(state, action) {
 			state.loading = false
-			state.users = action.payload
-			state.userLoaded =true
+			state.users = action.payload.allUsers
+			state.userMale = action.payload.male
+			state.userFemale = action.payload.female
+			state.userLoaded = true
 		},
 		allUsersFail(state) {
 			state.loading = false

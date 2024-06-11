@@ -4,8 +4,8 @@ import { ColumnType } from "../../component/enums/enum"
 import { commonDeleteFunc } from "../../redux/action/commonAction"
 import { getAllOrders, returnCreatedAtData } from "../../redux/action/orderAction"
 import { useAppDispatch, useAppSelector } from "../../redux/store"
-import Table from "../../reusable/table"
 import Chart from "../../reusable/chart"
+import Table from "../../reusable/table"
 import { lineChartData } from "./chart"
 
 const AllOrders = () => {
@@ -89,9 +89,14 @@ const AllOrders = () => {
 					chartData={lineChartData(createdAtData?.monthsData)}
 				/>
 				<div className="absolute top-3 right-10">
-					<select onChange={(e)=>dispatch(returnCreatedAtData(e.target.value))} className="bg-gray-200 outline-none px-4 py-1 rounded-md text-primary" name="" id="">
+					<select
+						onChange={(e) => dispatch(returnCreatedAtData(e.target.value))}
+						className="bg-gray-200 outline-none px-4 py-1 rounded-md text-primary"
+						name=""
+						id=""
+					>
 						{createdAtData?.yearContainer?.map((y: string) => (
-							<option  key={y} value={y}>
+							<option key={y} value={y}>
 								{y}
 							</option>
 						))}

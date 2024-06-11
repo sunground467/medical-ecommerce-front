@@ -63,6 +63,7 @@ const Form = ({
 				setErrors((prev) => ({ ...prev, [field.fieldName]: errorMsg }))
 			}
 		}
+		console.log(updatedForm)
 
 		setForm(updatedForm)
 		setShowError(true)

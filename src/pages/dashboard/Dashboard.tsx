@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { AiFillProduct } from "react-icons/ai"
 import { FaThumbsUp, FaTimesCircle, FaUsers, FaXbox } from "react-icons/fa"
 import { GiConfirmed } from "react-icons/gi"
+import { IoIosRefresh } from "react-icons/io"
 import { IoTime } from "react-icons/io5"
 import { MdAssignmentReturned, MdLocalShipping } from "react-icons/md"
 import { getAllOrdersCount } from "../../redux/action/orderAction"
@@ -66,19 +67,19 @@ const Dashboard = () => {
 				icon: <FaThumbsUp color="green" fontSize={25} />,
 				label: "Delivered",
 				colorCode: "green",
-				value: (ordersCount?.deliveredOrders * 100) / ordersCount?.totalOrders
+				value: ((ordersCount?.deliveredOrders * 100) / ordersCount?.totalOrders).toFixed(0)
 			},
 			{
 				icon: <FaTimesCircle color="#6A45FE" fontSize={25} />,
 				label: "Canceled",
 				colorCode: "#6A45FE",
-				value: (ordersCount?.cancelOrders * 100) / ordersCount?.totalOrders
+				value: ((ordersCount?.cancelOrders * 100) / ordersCount?.totalOrders).toFixed(0)
 			},
 			{
 				icon: <FaTimesCircle color="red" fontSize={25} />,
 				label: "Rejected",
 				colorCode: "red",
-				value: (ordersCount?.rejectOrders * 100) / ordersCount?.totalOrders
+				value: ((ordersCount?.rejectOrders * 100) / ordersCount?.totalOrders).toFixed(0)
 			}
 		])
 		setOverView([
@@ -92,19 +93,19 @@ const Dashboard = () => {
 				icon: <FaUsers color="#6A45FE" fontSize={35} />,
 				label: "Total Employers",
 				colorCode: "#6A45FE",
-				value: 20
+				value: ordersCount?.totalEmployers
 			},
 			{
 				icon: <AiFillProduct color="orange" fontSize={35} />,
 				label: "Total Products",
 				colorCode: "orange",
-				value: 40
+				value: ordersCount?.totalProducts
 			},
 			{
 				icon: <FaUsers color="#426EFE" fontSize={35} />,
 				label: "Total Costomers",
 				colorCode: "#426EFE",
-				value: 140
+				value: ordersCount?.totalCostomers
 			}
 		])
 	}, [Object.entries(ordersCount)?.length])
@@ -115,13 +116,12 @@ const Dashboard = () => {
 		const month = String(today.getMonth() + 1).padStart(2, "0")
 		const day = String(today.getDate()).padStart(2, "0")
 		setEndDate(`${year}-${month}-${day}`)
-		setStartDate(`${year}-${month}-01`)
-		dispatch(getAllOrdersCount())
+		setStartDate(`${year}-${month}-${day}`)
+		dispatch(getAllOrdersCount(`${year}-${month}-${day}`, `${year}-${month}-${day}`))
 	}, [])
 
 	const getGreeting = () => {
 		const currentHour = new Date().getHours()
-
 		if (currentHour >= 6 && currentHour < 12) {
 			return "Good Morning"
 		} else if (currentHour >= 12 && currentHour < 18) {
@@ -130,10 +130,18 @@ const Dashboard = () => {
 			return "Good Evening"
 		}
 	}
+
+	useEffect(() => {
+		getGreeting()
+	}, [])
 	return (
-		<div className="w-full pb-20">
+		<div className="w-full relative pb-20">
 			<p className="text-primary p-4 text-[20px]">{getGreeting()}, Admin 😊</p>
 			<p className="text-primary p-4 text-[20px]">Let's take an overview</p>
+
+			<button onClick={() => dispatch(getAllOrdersCount(startDate, endDate))} className="absolute right-5 top-4">
+				<IoIosRefresh fontSize={25} color="blue" />
+			</button>
 
 			<div className="grid grid-cols-12 px-2 gap-4">
 				{oveview.map((d, i) => (
@@ -155,7 +163,7 @@ const Dashboard = () => {
 
 			<div className="pt-14 flex max-sm:flex-col max-sm:gap-4 sm:items-center justify-between p-4">
 				<p className="text-primary text-[20px]">Order Statics</p>
-				<div className="flex max-sm:flex-col gap-4 ">
+				<div className="flex h-[50px] items-center max-sm:flex-col gap-4 ">
 					<div className="flex flex-col max-sm:w-full justify-center">
 						<label htmlFor="start-date" className="text-[13px] text-primary">
 							Select start date
@@ -181,6 +189,14 @@ const Dashboard = () => {
 							value={endDate}
 							onChange={(e) => setEndDate(e.target.value)}
 						/>
+					</div>
+					<div className="pt-4">
+						<button
+							onClick={() => dispatch(getAllOrdersCount(startDate, endDate))}
+							className="bg-primary text-white px-4 py-2 rounded-md"
+						>
+							Apply
+						</button>
 					</div>
 				</div>
 			</div>
