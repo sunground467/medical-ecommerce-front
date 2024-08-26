@@ -28,7 +28,7 @@ const Login = () => {
 		navigate("/")
 	}
 	const loginAsUser = async () => {
-		const { data } = await axiosInstance.post(`/login`, { mobile: 9827959420 })
+		const { data } = await axiosInstance.post(`/login`, { mobile: 9993323416 })
 		localStorage.setItem("token", JSON.stringify(data?.token))
 		navigate("/")
 	}
