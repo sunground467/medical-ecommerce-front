@@ -53,3 +53,10 @@ export enum paymentStatus {
 	RETURNED = "returned",
 	REJECTED = "rejected"
 }
+
+export enum CartType {
+	ADD_CART = "ADD_CART",
+	REMOVE_CART = "REMOVE_CART",
+	CHANGE_QUANTITY = "CHANGE_QUANTITY",
+	CLEAR_ALL = "CLEAR_ALL"
+}

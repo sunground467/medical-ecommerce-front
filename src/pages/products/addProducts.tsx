@@ -15,7 +15,7 @@ const AddProducts = () => {
 
 	const dispatch = useAppDispatch()
 
-	const submiteFormEvent = (form: FormField) => {
+	const submitFormEvent = (form: FormField) => {
 		dispatch(createProduct(form))
 	}
 	const submiteProdStockEvent = (form: FormField) => {
@@ -74,7 +74,7 @@ const AddProducts = () => {
 					formData={prodForm}
 					title="Create Product"
 					inputFormVal={setInputFormVal}
-					submiteFormEvent={submiteFormEvent}
+					submitFormEvent={submitFormEvent}
 					isResetButton={true}
 					loading={loading}
 				/>
@@ -84,7 +84,7 @@ const AddProducts = () => {
 					formData={childProdForm}
 					title="Nested child Product"
 					inputFormVal={setInputFormVal}
-					submiteFormEvent={submiteProdStockEvent}
+					submitFormEvent={submiteProdStockEvent}
 					isResetButton={true}
 					loading={secoundloading}
 				/>

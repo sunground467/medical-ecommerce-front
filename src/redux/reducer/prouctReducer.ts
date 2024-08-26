@@ -1,14 +1,47 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-const initialState: any = {
+interface Product {
+	prodImg: string
+	_id: string
+	prodName: string
+	categoryName: string
+	costPrice: number
+	mrpRate: number
+	sellingPrice: number
+	isPrescription: boolean
+	isDiscount: boolean
+	discountPerCentage: number
+	stock: number
+	createdAt: string
+	updatedAt: string
+	__v: number
+	brandName: string
+}
+
+interface ProductsAction {
+	loading: boolean
+	secoundloading: boolean
+	productId: string
+	productName: string
+	allProducts: Product[]
+	singleProduct: []
+	availableStock: number
+	outOfStock: number
+	expiredProduct: []
+	loaded: boolean
+}
+
+const initialState: ProductsAction = {
 	loading: false,
 	secoundloading: false,
 	productId: "",
 	productName: "",
 	allProducts: [],
 	singleProduct: [],
+	availableStock: 0,
+	outOfStock: 0,
 	expiredProduct: [],
-	loaded:false
+	loaded: false
 }
 
 const productSlice = createSlice({
@@ -33,10 +66,10 @@ const productSlice = createSlice({
 		getAllProductListSuccess(state, action) {
 			state.loading = false
 			state.allProducts = action.payload
-			state.loaded=true
+			state.loaded = true
 		},
 		getAllProductListFail(state) {
-			state.loaded=false
+			state.loaded = false
 			state.loading = false
 		},
 		getSingleProductListStart(state) {
@@ -44,7 +77,9 @@ const productSlice = createSlice({
 		},
 		getSingleProductListSuccess(state, action) {
 			state.loading = false
-			state.singleProduct = action.payload
+			state.singleProduct = action.payload?.singleProduct
+			state.availableStock = action.payload?.availableStock
+			state.outOfStock = action.payload?.outOfStock
 		},
 		getSingleProductListFail(state) {
 			state.loading = false

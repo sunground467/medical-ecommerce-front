@@ -48,7 +48,18 @@ const Chart = ({
 					options={{
 						maintainAspectRatio: false,
 						responsive: true,
-						plugins: { legend: { display: labelValue ? labelValue : false } }
+						plugins: { legend: { display: labelValue ? labelValue : false } },
+						scales: {
+							y: {
+								ticks: {
+									callback: function (value: string | number) {
+										if (Number.isInteger(value)) {
+											return value
+										}
+									}
+								}
+							}
+						}
 					}}
 				/>
 			)

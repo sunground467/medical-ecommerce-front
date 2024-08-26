@@ -1,24 +1,46 @@
 import { FormEvent, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axiosInstance from "../../component/interceptor/interceptor"
+import { useAppDispatch } from "../../redux/store"
+import { myProfile } from "../../redux/action/userAction"
 
 const Login = () => {
 	const [mobile, setMobile] = useState<any>()
 	const navigate = useNavigate()
+	const dispatch = useAppDispatch()
 	const adminLogin = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		if (mobile) {
-			const { data } = await axiosInstance.post(`/adminLogin`, { mobile })
+			const { data } = await axiosInstance.post(`/login`, { mobile })
 			localStorage.setItem("token", JSON.stringify(data?.token))
+			await dispatch(myProfile())
 			navigate("/")
 		}
+	}
+
+	const loginAsAdmin = async () => {
+		const { data } = await axiosInstance.post(`/adminLogin`, { mobile: 6260380884 })
+		localStorage.setItem("token", JSON.stringify(data?.token))
+		await dispatch(myProfile())
+		navigate("/")
+	}
+	const loginAsUser = async () => {
+		const { data } = await axiosInstance.post(`/login`, { mobile: 9827959420 })
+		localStorage.setItem("token", JSON.stringify(data?.token))
+		navigate("/")
 	}
 
 	useEffect(() => {
 		const accessToken = JSON.parse(localStorage.getItem("token") as string)
 		if (accessToken) navigate("/")
-			else navigate("/login")
+		else navigate("/login")
 	}, [])
+
+	const handleLogin = () => {
+		console.log("click")
+		window.location.href = "http://localhost:4500/auth/google" // Redirect to your backend for authentication
+	}
+
 	return (
 		<div className="flex justify-center items-center h-[100vh] bg-gray-200">
 			<div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
@@ -43,6 +65,34 @@ const Login = () => {
 						className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
 					>
 						Login
+					</button>
+					<button
+						onClick={handleLogin}
+						type="button"
+						className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+					>
+						Login With Google
+					</button>
+					<button
+						onClick={() => navigate("/signup")}
+						type="button"
+						className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+					>
+						Sign Up
+					</button>
+					<button
+						onClick={loginAsAdmin}
+						type="button"
+						className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+					>
+						Login As Admin
+					</button>
+					<button
+						onClick={loginAsUser}
+						type="button"
+						className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+					>
+						Login As User
 					</button>
 				</form>
 			</div>

@@ -51,7 +51,7 @@ const AllStructure = () => {
 	}
 
 	const setPropValForLink = (val: any) => {
-		navigate(`/update-structure/${val}`)
+		navigate(`/dashboard/update-structure/${val}`)
 	}
 
 	const deleteCategoryVal = (val: string) => {
@@ -110,7 +110,7 @@ const AllStructure = () => {
 					isEditBtn={true}
 					formData={updateCategoryTitle}
 					formTitle="Update Category title"
-					submiteFormEvent={submitCategoryForm}
+					submitFormEvent={submitCategoryForm}
 					loading={loading}
 					page={page}
 					setPage={setPage}
@@ -132,7 +132,7 @@ const AllStructure = () => {
 					isEditBtn={true}
 					formData={subcategoryForm}
 					formTitle="Update Sub Category"
-					submiteFormEvent={submitSubCategoryForm}
+					submitFormEvent={submitSubCategoryForm}
 					loading={loading}
 					page={subPage}
 					setPage={setSubPage}

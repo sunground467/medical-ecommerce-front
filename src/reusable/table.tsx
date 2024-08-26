@@ -9,6 +9,7 @@ import { dateFormat, titleCasePipe } from "../pipes/pipes"
 import Form from "./form"
 import { DotsLoader } from "./DotsLoader"
 import { useLocation } from "react-router-dom"
+import LazyLoadImage from "./LazyLoadImage"
 
 const Table = ({
 	title,
@@ -20,7 +21,7 @@ const Table = ({
 	isEditBtn,
 	formData,
 	formTitle,
-	submiteFormEvent,
+	submitFormEvent,
 	loading,
 
 	callApi,
@@ -40,7 +41,7 @@ const Table = ({
 	isEditBtn?: boolean
 	formData?: FormField[]
 	formTitle?: string
-	submiteFormEvent?: Function
+	submitFormEvent?: Function
 	loading?: boolean
 
 	callApi: Function
@@ -52,7 +53,7 @@ const Table = ({
 	limit: number
 	setLimit: any
 }) => {
-	const [dropFilter] = useState<number[]>([ 10, 25,50, 100])
+	const [dropFilter] = useState<number[]>([10, 25, 50, 100])
 	const [openModal, seTOpenModal] = useState<boolean>(false)
 	const [openEditModal, seTOpenEditModal] = useState<boolean>(false)
 	const [valueData, SetValueData] = useState<any>({})
@@ -140,8 +141,8 @@ const Table = ({
 	}
 
 	const SubmitTheForm = (form: any) => {
-		if (valueData && submiteFormEvent) {
-			submiteFormEvent({ valueData, form })
+		if (valueData && submitFormEvent) {
+			submitFormEvent({ valueData, form })
 			seTOpenEditModal(false)
 		}
 	}
@@ -171,7 +172,7 @@ const Table = ({
 									case ColumnType.IMAGE:
 										return (
 											<div className={`${col?.className ? col.className : "w-[300px]"} text-center`}>
-												<img
+												<LazyLoadImage
 													className="w-[50px] h-[50px] object-contain"
 													src={flatData[col.propName]}
 													alt="Image"
@@ -339,7 +340,7 @@ const Table = ({
 						>
 							X
 						</button>
-						<Form formData={formData} title={formTitle} submiteFormEvent={SubmitTheForm} btnName="Update" />
+						<Form formData={formData} title={formTitle} submitFormEvent={SubmitTheForm} btnName="Update" />
 					</div>
 				</div>
 			) : null}

@@ -7,6 +7,7 @@
 	font-family: "Poppins-regular";
 	src: url("assets/data/fonts/Urbanist-VariableFont_wght.ttf") format("truetype");
 	font-style: normal;
+	font-display: swap;
 }
 
 * {

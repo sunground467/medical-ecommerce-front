@@ -1,7 +1,7 @@
 import { CiMenuFries } from "react-icons/ci"
 import { FaUserCircle } from "react-icons/fa"
 import { IoMdPower } from "react-icons/io"
-import { IoNotifications, IoSettings } from "react-icons/io5"
+import { IoHome, IoNotifications, IoSettings } from "react-icons/io5"
 import { useNavigate } from "react-router-dom"
 
 const Header = ({ setToggle }: any) => {
@@ -21,6 +21,9 @@ const Header = ({ setToggle }: any) => {
 				<CiMenuFries fontSize={24} color="gray" />
 			</div>
 			<div className="flex justify-center items-center gap-4">
+				<button>
+					<IoHome onClick={()=>navigate('/')} fontSize={24} color="gray" />
+				</button>
 				<button>
 					<IoSettings fontSize={24} color="gray" />
 				</button>

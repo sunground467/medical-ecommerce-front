@@ -1,3 +1,4 @@
+import { Dispatch } from "@reduxjs/toolkit"
 import axiosInstance from "../../component/interceptor/interceptor"
 import {
 	allOrdersFail,
@@ -14,7 +15,18 @@ import {
 	returnCreatedAtDataSuccess,
 	updateOrderStatusFail,
 	updateOrderStatusStart,
-	updateOrderStatusSuccess
+	updateOrderStatusSuccess,
+	createPaymentFail,
+	createPaymentStart,
+	createPaymentSuccess,
+	myOrderListFail,
+	myOrderListStart,
+	myOrderListSuccess,
+	newOrderFail,
+	newOrderStart,
+	newOrderSuccess,
+	updateMyOrderStatusFail,
+	updateMyOrderStatusSuccess
 } from "../reducer/orderReducer"
 
 export const getAllOrders =
@@ -48,7 +60,9 @@ export const getAllOrdersCount =
 		try {
 			dispatch(ordersCountStart())
 
-			const { data } = await axiosInstance.get(`/order-status-count/${startDate}/${endDate}`)
+			const { data } = await axiosInstance.get(`/order-status-count/${startDate}/${endDate}`, {
+				redundantAPICall: false
+			} as any)
 			if (data) dispatch(ordersCountSuccess(data?.results))
 		} catch (error) {
 			dispatch(ordersCountFail())
@@ -104,5 +118,89 @@ export const getOrdersByWeeks =
 			dispatch(getOrderByWeeksSuccess({ pending: data?.pending, delivered: data?.delivered, ongoing: data?.ongoing }))
 		} catch (error) {
 			dispatch(getOrderByWeeksFail())
+		}
+	}
+
+// for client
+
+export const createNewOrder =
+	(orderItems: any[]) =>
+	async (
+		dispatch: (args0: {
+			payload: string | undefined
+			type: "order/newOrderStart" | "order/newOrderSuccess" | "order/newOrderFail"
+		}) => void
+	) => {
+		try {
+			dispatch(newOrderStart())
+			const { data } = await axiosInstance.post("/new-order", { orderItems })
+			if (data) {
+				dispatch(newOrderSuccess(data?.newOrder))
+			}
+		} catch (error) {
+			dispatch(newOrderFail())
+		}
+	}
+export const createPayment =
+	(orderId: string, paymentMethod: string) =>
+	async (
+		dispatch: (args0: {
+			payload: string | undefined
+			type: "order/createPaymentStart" | "order/createPaymentSuccess" | "order/createPaymentFail"
+		}) => void
+	) => {
+		try {
+			dispatch(createPaymentStart())
+			const { data } = await axiosInstance.patch("/update-payment-methode", {
+				orderId,
+				paymentMethod
+			})
+			if (data) {
+				dispatch(createPaymentSuccess())
+			}
+		} catch (error) {
+			dispatch(createPaymentFail())
+		}
+	}
+
+export const getMyOrderlist = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch(myOrderListStart())
+			const { data } = await axiosInstance.get(`/my-order`)
+			if (data) {
+				const myOrder = data?.myOrder?.map((my: any) => ({
+					...my,
+					orderItems: my?.orderItems?.map((o: any) => ({
+						...o,
+						prodImg: o?.prodImg?.url
+					}))
+				}))
+				dispatch(myOrderListSuccess(myOrder))
+			}
+		} catch (error) {
+			dispatch(myOrderListFail())
+		}
+	}
+}
+
+export const updateMyOrderStatus =
+	(id: string, orderStatus: string) =>
+	async (
+		dispatch: (args0: {
+			payload: string | undefined
+			type: "order/updateMyOrderStatusStart" | "order/updateMyOrderStatusSuccess" | "order/updateMyOrderStatusFail"
+		}) => void
+	) => {
+		try {
+			dispatch(updateMyOrderStatusFail())
+			const { data } = await axiosInstance.patch(`/update-myorder-status/${id}`, {
+				orderStatus
+			})
+			if (data) {
+				dispatch(updateMyOrderStatusSuccess())
+			}
+		} catch (error) {
+			dispatch(updateMyOrderStatusFail())
 		}
 	}

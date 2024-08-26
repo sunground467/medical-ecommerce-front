@@ -17,11 +17,13 @@ const AllProducts = () => {
 	const { allProducts, loading, loaded } = useAppSelector((state) => state.product)
 
 	const setPropValForLink = (val: any) => {
-		navigate(`/single-product/${val?.data?._id}`)
+		navigate(`/dashboard/single-product/${val?.data?._id}`)
 	}
 
-	const deleteProductVal = (val: string) => {
-		dispatch(commonDeleteFunc("deleteProduct", val))
+	const deleteProductVal = (val: any) => {
+		const id = val?._id
+		dispatch(commonDeleteFunc("deleteProduct", id))
+		dispatch(getAllProducts("", 1, 5))
 	}
 
 	const obj = {

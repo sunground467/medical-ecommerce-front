@@ -9,14 +9,14 @@ import Table from "../../reusable/table"
 import { lineChartData, weekslineChartData } from "./chart"
 
 const AllOrders = () => {
-	const { allOrders, loading, loaded, createdAtData, perWeekOrder } = useAppSelector((state) => state.orders)
+	const { allOrders, loading, createdAtData, perWeekOrder } = useAppSelector((state) => state.orders)
 	const [search, setSearch] = useState<string>("")
 	const [limit, setLimit] = useState<number>(5)
 	const [page, setPage] = useState<number>(1)
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
 	const setPropValForLink = (val: any) => {
-		const url = val?.key === "_id" ? `/single-order/${val?.data?._id}` : `/single-user/${val?.data?.userId}`
+		const url = val?.key === "_id" ? `/dashboard/single-order/${val?.data?._id}` : `/dashboard/single-user/${val?.data?.userId}`
 		navigate(url, { state: val?.data })
 	}
 	const getOrders = (val: any) => {
@@ -55,8 +55,8 @@ const AllOrders = () => {
 	}
 
 	useEffect(() => {
-		if (!loaded) dispatch(getAllOrders("", 1, 10))
-	}, [loaded])
+		dispatch(getAllOrders("", 1, 10))
+	}, [])
 
 	useEffect(() => {
 		dispatch(returnCreatedAtData())

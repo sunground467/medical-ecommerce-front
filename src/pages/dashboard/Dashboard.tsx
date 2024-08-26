@@ -230,7 +230,11 @@ const Dashboard = () => {
 							</p>
 							<div className="w-[100%] h-3 rounded-full bg-gray-200">
 								<div
-									style={{ background: `${d?.colorCode}`, width: `${d?.value}%` }}
+									style={{
+										transition: "width 1s ease-in-out",
+										background: `${d?.colorCode}`,
+										width: `${d?.value ? d?.value : 0}%`
+									}}
 									className={`h-full rounded-full`}
 								></div>
 							</div>

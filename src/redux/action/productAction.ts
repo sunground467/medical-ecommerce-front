@@ -57,7 +57,7 @@ export const addStockInProd =
 	}
 
 export const getAllProducts =
-	(search: string, page: number, limit: number) =>
+	(search: string, page: number, limit: number, categoryName?: string) =>
 	async (
 		dispatch: (arg0: {
 			payload: string | undefined
@@ -66,12 +66,15 @@ export const getAllProducts =
 	) => {
 		try {
 			dispatch(getAllProductListStart())
-			const url = search
-				? `/getAllProductList?search=${search}&page=${page}&limit=${limit}`
-				: `/getAllProductList?page=${page}&limit=${limit}`
-			const { data } = await axiosInstance.get(url)
+			let url = ""
+			if (search) url = `/getAllProductList?search=${search}&page=${page}&limit=${limit}`
+			else if (categoryName && search)
+				url = `/getAllProductList/${categoryName}?search=${search}&page=${page}&limit=${limit}`
+			else if (categoryName && !search) url = `/getAllProductList/${categoryName}?page=${page}&limit=${limit}`
+			else url = `/getAllProductList?page=${page}&limit=${limit}`
+			const { data } = await axiosInstance.get(url, { redundantAPICall: false } as any)
 			if (data) {
-				const allProduct = await data?.allProducts.results.map((prod: any) => ({
+				const allProduct = await data?.allProducts?.results?.map((prod: any) => ({
 					...prod,
 					prodImg: prod.prodImg.url,
 					stock: prod.stock.reduce((acc: any, curr: any) => acc + curr.quantity, 0)
@@ -93,9 +96,16 @@ export const getSingleProductList =
 	) => {
 		try {
 			dispatch(getSingleProductListStart())
-			const { data } = await axiosInstance.get(`/getSingleProductList/${id}`)
-			if (data) dispatch(getSingleProductListSuccess(data?.singleProduct))
-		} catch (error: any) {
+			const { data } = await axiosInstance.get(`/getSingleProductList/${id}`, { redundantAPICall: false } as any)
+			if (data)
+				dispatch(
+					getSingleProductListSuccess({
+						singleProduct: data?.singleProduct,
+						availableStock: data?.availableStock,
+						outOfStock: data?.outOfStock
+					})
+				)
+		} catch (error) {
 			dispatch(getSingleProductListFail())
 		}
 	}

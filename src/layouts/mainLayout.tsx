@@ -41,7 +41,7 @@ const MainLayout = () => {
 	}, [])
 
 	return (
-		<div className="w-[100vw] flex">
+		<div  className="w-[100vw] flex">
 			<div className={`${toggle ? "hidden" : "w-[250px]"} `}>
 				<SideNav />
 			</div>

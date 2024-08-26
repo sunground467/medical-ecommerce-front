@@ -10,9 +10,21 @@ import {
 	allUsersFail,
 	allUsersStart,
 	allUsersSuccess,
+	logoutFail,
+	logoutStart,
+	logoutSuccess,
+	myProfileFail,
+	myProfileStart,
+	myProfileSuccess,
 	singleUserFail,
 	singleUserStart,
-	singleUserSuccess
+	singleUserSuccess,
+	updateMyProfileFail,
+	updateMyProfileStart,
+	updateMyProfileSuccess,
+	uploadProfileAndPrescriptionImgFail,
+	uploadProfileAndPrescriptionImgStart,
+	uploadProfileAndPrescriptionImgSuccess
 } from "../reducer/userReducer"
 
 export const addEmployeeFunc =
@@ -61,7 +73,7 @@ export const allEmployeeFunc =
 					profileImg: emp.profileImg.URL,
 					prescriptionImg: emp.prescriptionImg.URL
 				}))
-				dispatch(allEmployeeSuccess({allEmployee,female: data?.female, male: data?.male}))
+				dispatch(allEmployeeSuccess({ allEmployee, female: data?.female, male: data?.male }))
 			}
 		} catch (error) {
 			dispatch(allEmployeeFail())
@@ -109,5 +121,89 @@ export const getSingleUserFunc =
 			if (data) dispatch(singleUserSuccess(data?.singleUser))
 		} catch (error: any) {
 			dispatch(singleUserFail())
+		}
+	}
+
+// for client side
+
+
+
+export const uploadProfileAndPrescriptionImg =
+	(file: any, methode: string) =>
+	async (
+		dispatch: (args0: {
+			payload: string | undefined
+			type:
+				| "users/uploadProfileAndPrescriptionImgStart"
+				| "users/uploadProfileAndPrescriptionImgSuccess"
+				| "users/uploadProfileAndPrescriptionImgFail"
+		}) => void
+	) => {
+		try {
+			dispatch(uploadProfileAndPrescriptionImgStart())
+			const url = methode === "profilePic" ? "/updateProfilePic" : "/updatePrescription"
+			const { data } = await axiosInstance.patch(url, {
+				file
+			})
+			if (data) {
+				dispatch(uploadProfileAndPrescriptionImgSuccess())
+			}
+		} catch (error) {
+			dispatch(uploadProfileAndPrescriptionImgFail())
+		}
+	}
+export const myProfile =
+	() =>
+	async (
+		dispatch: (args0: {
+			payload: string | undefined
+			type: "users/myProfileStart" | "users/myProfileSuccess" | "users/myProfileFail"
+		}) => void
+	) => {
+		try {
+			dispatch(myProfileStart())
+			const { data } = await axiosInstance.get("/my-profile")
+			if (data) {
+				dispatch(myProfileSuccess(data?.user))
+			}
+		} catch (error) {
+			dispatch(myProfileFail())
+		}
+	}
+export const updateMyProfile =
+	(form: any) =>
+	async (
+		dispatch: (args0: {
+			payload: string | undefined
+			type: "users/updateMyProfileStart" | "users/updateMyProfileSuccess" | "users/updateMyProfileFail"
+		}) => void
+	) => {
+		try {
+			dispatch(updateMyProfileStart())
+			const { data } = await axiosInstance.patch("/updateProfile", form)
+			if (data) {
+				dispatch(updateMyProfileSuccess(data?.user))
+			}
+		} catch (error) {
+			console.log(error)
+			dispatch(updateMyProfileFail())
+		}
+	}
+
+export const logout =
+	() =>
+	async (
+		dispatch: (args0: {
+			payload: string | undefined
+			type: "users/logoutStart" | "users/logoutSuccess" | "users/logoutFail"
+		}) => void
+	) => {
+		try {
+			dispatch(logoutStart())
+			localStorage.removeItem("token")
+			const accessToken = ""
+			dispatch(logoutSuccess(accessToken))
+		} catch (error) {
+			dispatch(logoutFail())
 		}
 	}

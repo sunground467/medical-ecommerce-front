@@ -16,7 +16,7 @@ const AllUsers = () => {
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
 	const setPropValForLink = (val: any) => {
-		navigate(`/single-user/${val?.data?._id}`)
+		navigate(`/dashboard/single-user/${val?.data?._id}`)
 	}
 
 	const deleteProductVal = (val: string) => {
@@ -45,6 +45,7 @@ const AllUsers = () => {
 	const customColumnsClass = {
 		_id: { className: "w-[300px] text-center", isView: true },
 		profileImg: { className: "w-[250px] flex justify-center", columnType: ColumnType.IMAGE },
+		prescriptionImg: { className: "w-[250px] flex justify-center", columnType: ColumnType.IMAGE },
 		createdAt: { columnType: ColumnType.DATE },
 		updatedAt: { columnType: ColumnType.DATE }
 	}

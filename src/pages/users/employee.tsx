@@ -16,7 +16,7 @@ const Employee = () => {
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
 	const setPropValForLink = (val: any) => {
-		navigate(`/single-user/${val?.data?._id}`)
+		navigate(`/dashboard/single-user/${val?.data?._id}`)
 	}
 
 	const deleteProductVal = (val: string) => {

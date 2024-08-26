@@ -12,9 +12,9 @@ export const lineChartData = (monthData: number[]) => {
 		]
 	}
 }
-export const weekslineChartData = (delivered:number[],ongoing:number[],pending:number[],) => {
+export const weekslineChartData = (delivered: number[], ongoing: number[], pending: number[]) => {
 	return {
-		labels: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+		labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
 		datasets: [
 			{
 				label: "Delivered",
@@ -33,7 +33,7 @@ export const weekslineChartData = (delivered:number[],ongoing:number[],pending:n
 				data: ongoing,
 				borderColor: ["orange"],
 				barPercentage: 5.9
-			},
+			}
 		]
 	}
 }

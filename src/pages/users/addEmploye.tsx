@@ -7,7 +7,7 @@ import { addEmployee } from "./form"
 const AddEmploye = () => {
 	const dispatch = useAppDispatch()
 	const { loading } = useAppSelector((state) => state.users)
-	const submiteFormEvent = (form: FormField) => {
+	const submitFormEvent = (form: FormField) => {
 		dispatch(addEmployeeFunc(form))
 	}
 	return (
@@ -16,7 +16,7 @@ const AddEmploye = () => {
 				<Form
 					formData={addEmployee}
 					title="Add Employee"
-					submiteFormEvent={submiteFormEvent}
+					submitFormEvent={submitFormEvent}
 					isResetButton={true}
 					loading={loading}
 				/>

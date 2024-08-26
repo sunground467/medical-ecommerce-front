@@ -7,7 +7,7 @@ export const sideNavSchema: SideNavType[] = [
 		children: [
 			{
 				label: "Dashboard",
-				route: "/"
+				route: "/dashboard"
 			}
 		]
 	},
@@ -17,15 +17,15 @@ export const sideNavSchema: SideNavType[] = [
 		children: [
 			{
 				label: "add products",
-				route: "/add-products"
+				route: "/dashboard/add-products"
 			},
 			{
 				label: "all products",
-				route: "/all-products"
+				route: "/dashboard/all-products"
 			},
 			{
 				label: "expired products",
-				route: "/expired-products"
+				route: "/dashboard/expired-products"
 			}
 		]
 	},
@@ -35,11 +35,11 @@ export const sideNavSchema: SideNavType[] = [
 		children: [
 			{
 				label: "Create structure",
-				route: "/create-structure"
+				route: "/dashboard/create-structure"
 			},
 			{
 				label: "All Structure",
-				route: "/all-structure"
+				route: "/dashboard/all-structure"
 			}
 		]
 	},
@@ -49,15 +49,15 @@ export const sideNavSchema: SideNavType[] = [
 		children: [
 			{
 				label: "Add Employee",
-				route: "/add-employee"
+				route: "/dashboard/add-employee"
 			},
 			{
 				label: "All Employee",
-				route: "/all-employee"
+				route: "/dashboard/all-employee"
 			},
 			{
 				label: "All Users",
-				route: "/all-users"
+				route: "/dashboard/all-users"
 			}
 		]
 	},
@@ -68,7 +68,7 @@ export const sideNavSchema: SideNavType[] = [
 		children: [
 			{
 				label: "All Sales",
-				route: "/all-sales"
+				route: "/dashboard/all-sales"
 			}
 		]
 	},
@@ -78,7 +78,7 @@ export const sideNavSchema: SideNavType[] = [
 		children: [
 			{
 				label: "All Orders",
-				route: "/all-orders"
+				route: "/dashboard/all-orders"
 			}
 		]
 	},

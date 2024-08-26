@@ -5,6 +5,9 @@ import { addStockInProd, getSingleProductList, updateSingleProductList } from ".
 import { useAppDispatch, useAppSelector } from "../../redux/store"
 import Form from "../../reusable/form"
 import { nestedProductForm, productForm } from "./form"
+import Chart from "../../reusable/chart"
+import { ChartTypeEnum } from "../../component/enums/enum"
+import { availableOutOfStock } from "./chart"
 
 const SingleProduct = () => {
 	const [prodForm, setProdForm] = useState<FormField[]>(productForm)
@@ -12,9 +15,9 @@ const SingleProduct = () => {
 	const { prodId } = useParams()
 	const dispatch = useAppDispatch()
 	const { allSubCategory } = useAppSelector((state) => state.category)
-	const { singleProduct } = useAppSelector((state) => state.product)
+	const { singleProduct, availableStock, outOfStock }:any = useAppSelector((state) => state.product)
 
-	const submiteFormEvent = (form: any) => {
+	const submitFormEvent = (form: any) => {
 		if (prodId) {
 			let formObj: any = {}
 			for (const key in form) {
@@ -81,18 +84,26 @@ const SingleProduct = () => {
 				<Form
 					formData={prodForm}
 					title="Update Product details"
-					submiteFormEvent={submiteFormEvent}
+					submitFormEvent={submitFormEvent}
 					isResetButton={true}
-					formValuObj={singleProduct}
+					formValueObj={singleProduct}
 				/>
 			</div>
 			<div className={`col-span-12 p-10 bg-white rounded-md`}>
 				<Form
 					formData={childProdForm}
 					title="Update Nested child Product"
-					submiteFormEvent={submiteProdStockEvent}
+					submitFormEvent={submiteProdStockEvent}
 					isResetButton={true}
 					takeFieldValue={true}
+				/>
+			</div>
+			<div className="col-span-12">
+				<Chart
+					chartName={ChartTypeEnum.DOUGHNUT}
+					height="h-[450px]"
+					title="Total Stock Availability"
+					chartData={availableOutOfStock(availableStock, outOfStock)}
 				/>
 			</div>
 		</div>

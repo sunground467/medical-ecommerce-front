@@ -54,7 +54,7 @@ const CreateStructure = () => {
 					formData={createCategoryTitle}
 					title="Create Category title"
 					btnName={"Create"}
-					submiteFormEvent={submiteCategoryFormEvent}
+					submitFormEvent={submiteCategoryFormEvent}
 				/>
 			</div>
 			<div className={`col-span-12 p-10 max-sm:p-5 relative bg-white rounded-md`}>
@@ -65,7 +65,7 @@ const CreateStructure = () => {
 					formData={subcategoryForm}
 					title="Create Subcategory Form"
 					btnName={"Create"}
-					submiteFormEvent={submiteSubCategoryFormEvent}
+					submitFormEvent={submiteSubCategoryFormEvent}
 				/>
 			</div>
 		</div>

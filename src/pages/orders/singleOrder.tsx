@@ -126,7 +126,7 @@ const SingleOrder = () => {
 					title="Update order details"
 					loading={loading}
 					btnName="Update"
-					submiteFormEvent={updateOrder}
+					submitFormEvent={updateOrder}
 					takeFieldValue={true}
 				/>
 			</div>

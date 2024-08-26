@@ -11,15 +11,14 @@ const EditUsers = () => {
 	const { id } = useParams()
 	const dispatch = useAppDispatch()
 
-	const { singleUser } = useAppSelector((state) => state.users)
+	const { singleUser }:any = useAppSelector((state) => state.users)
 
-	const submiteFormEvent = (form: any) => {
+	const submitFormEvent = (form: any) => {
 		if (id) {
 			let formObj: any = {}
 			for (const key in form) {
 				if (singleUser[key] !== form[key]) formObj[key] = form[key]
 			}
-			console.log(formObj)
 			dispatch(addEmployeeFunc(formObj, id))
 		}
 	}
@@ -52,9 +51,9 @@ const EditUsers = () => {
 				<Form
 					formData={userForm}
 					title="Update User details"
-					submiteFormEvent={submiteFormEvent}
+					submitFormEvent={submitFormEvent}
 					isResetButton={true}
-					formValuObj={singleUser}
+					formValueObj={singleUser}
 				/>
 			</div>
 		</div>

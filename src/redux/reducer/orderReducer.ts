@@ -1,7 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-const initialState: any = {
+interface OrderState {
+	loading: boolean
+	getOrder: null
+	myOrderList: any[]
+	openModal: boolean
+	allOrders: any[]
+	ordersCount: any
+	createdAtData: any
+	perWeekOrder: any
+}
+
+const initialState: OrderState = {
 	loading: false,
+	getOrder: null,
+	myOrderList: [],
+	openModal: false,
 	allOrders: [],
 	ordersCount: {},
 	createdAtData: {},
@@ -62,6 +76,50 @@ const orderSlice = createSlice({
 		},
 		getOrderByWeeksFail(state) {
 			state.loading = false
+		},
+		newOrderStart(state) {
+			state.loading = true
+		},
+		newOrderSuccess(state, action) {
+			state.loading = false
+			state.getOrder = action.payload
+		},
+		newOrderFail(state) {
+			state.loading = false
+		},
+		createPaymentStart(state) {
+			state.loading = true
+		},
+		createPaymentSuccess(state) {
+			state.loading = false
+			state.openModal = true
+		},
+		createPaymentFail(state) {
+			state.loading = false
+		},
+		nullAllvalue(state) {
+			state.getOrder = null
+			state.openModal = false
+		},
+		myOrderListStart(state) {
+			state.loading = true
+			state.myOrderList = []
+		},
+		myOrderListSuccess(state, action) {
+			state.loading = false
+			state.myOrderList = action.payload
+		},
+		myOrderListFail(state) {
+			state.loading = false
+		},
+		updateMyOrderStatusStart(state) {
+			state.loading = true
+		},
+		updateMyOrderStatusSuccess(state) {
+			state.loading = false
+		},
+		updateMyOrderStatusFail(state) {
+			state.loading = false
 		}
 	}
 })
@@ -82,6 +140,21 @@ export const {
 	getOrderByWeeksStart,
 	getOrderByWeeksSuccess,
 	getOrderByWeeksFail,
+
+	// for client
+	newOrderStart,
+	newOrderSuccess,
+	newOrderFail,
+	createPaymentStart,
+	createPaymentSuccess,
+	createPaymentFail,
+	nullAllvalue,
+	myOrderListStart,
+	myOrderListSuccess,
+	myOrderListFail,
+	updateMyOrderStatusStart,
+	updateMyOrderStatusSuccess,
+	updateMyOrderStatusFail
 } = orderSlice.actions
 
 export default orderSlice

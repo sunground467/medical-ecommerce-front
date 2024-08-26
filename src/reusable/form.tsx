@@ -8,10 +8,10 @@ const Form = ({
 	title,
 	isResetButton,
 	btnName,
-	submiteFormEvent,
+	submitFormEvent,
 	inputFormVal,
 	isDisabledBtn,
-	formValuObj,
+	formValueObj,
 	takeFieldValue,
 	loading
 }: {
@@ -20,9 +20,9 @@ const Form = ({
 	isResetButton?: boolean
 	btnName?: string
 	inputFormVal?: any
-	submiteFormEvent: Function
+	submitFormEvent: Function
 	isDisabledBtn?: boolean
-	formValuObj?: any
+	formValueObj?: any
 	takeFieldValue?: boolean
 	loading?: boolean
 }) => {
@@ -39,16 +39,16 @@ const Form = ({
 	}, [form])
 
 	useEffect(() => {
-		if (formValuObj) {
+		if (formValueObj) {
 			formData.map((field) => {
-				setForm((prev) => ({ ...prev, [field.fieldName]: formValuObj[field.fieldName] }))
+				setForm((prev) => ({ ...prev, [field.fieldName]: formValueObj[field.fieldName] }))
 			})
 		} else if (takeFieldValue) {
 			formData.map((field: any) => {
 				setForm((prev) => ({ ...prev, [field.fieldName]: field.value || "" }))
 			})
 		}
-	}, [formData, formValuObj, takeFieldValue])
+	}, [formData, formValueObj, takeFieldValue])
 
 	const submitForm = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -70,7 +70,7 @@ const Form = ({
 		const isFormValid = formData.every((field) => form[field.fieldName])
 
 		if (isFormValid) {
-			submiteFormEvent(form)
+			submitFormEvent(form)
 		}
 	}
 	const setImage = async (e: ChangeEvent<HTMLInputElement>, fieldName: string) => {
