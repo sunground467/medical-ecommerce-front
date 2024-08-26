@@ -1,14 +1,15 @@
 import { FormEvent, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axiosInstance from "../../component/interceptor/interceptor"
-import { useAppDispatch } from "../../redux/store"
+import { useAppDispatch, useAppSelector } from "../../redux/store"
 import { myProfile } from "../../redux/action/userAction"
 import { updateAccessToken } from "../../redux/reducer/userReducer"
 
 const Login = () => {
-	const [mobile, setMobile] = useState('')
+	const [mobile, setMobile] = useState("")
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
+	const { accessToken } = useAppSelector((state) => state.users)
 	const adminLogin = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		if (mobile) {
@@ -34,10 +35,9 @@ const Login = () => {
 	}
 
 	useEffect(() => {
-		const accessToken = JSON.parse(localStorage.getItem("token") as string)
 		if (accessToken) navigate("/")
 		else navigate("/login")
-	}, [])
+	}, [accessToken])
 
 	const handleLogin = () => {
 		console.log("click")

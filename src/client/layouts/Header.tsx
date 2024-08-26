@@ -11,7 +11,7 @@ import { getAllProducts } from "../../redux/action/productAction"
 
 const Header = () => {
 	const { categoryLoaded, subCategoryLoaded } = useAppSelector((state) => state.category)
-	const { user } = useAppSelector((state) => state.users)
+	const { user, accessToken } = useAppSelector((state) => state.users)
 	const { cart } = useAppSelector((state) => state.cart)
 	const [input, setInput] = useState("")
 
@@ -25,11 +25,10 @@ const Header = () => {
 		if (!subCategoryLoaded) dispatch(getAllSubCategories("", 100, 1))
 	}, [subCategoryLoaded])
 	useEffect(() => {
-		const token = JSON.parse(localStorage.getItem("token") as string)
-		if (token) {
+		if (accessToken) {
 			dispatch(myProfile())
 		}
-	}, [])
+	}, [accessToken])
 
 	useEffect(() => {
 		const categoryName = "medical"
@@ -40,7 +39,7 @@ const Header = () => {
 		return () => clearTimeout(interval)
 	}, [input])
 
-	const logoutHandler = async() => {
+	const logoutHandler = async () => {
 		await dispatch(logout())
 		navigate("/")
 	}
