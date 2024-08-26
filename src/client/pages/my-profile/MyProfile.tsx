@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react"
 import { MdModeEdit } from "react-icons/md"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import axiosInstance from "../../../component/interceptor/interceptor"
 import { FormField } from "../../../component/interface/all-interface"
 import Loader from "../../../component/Loader/Loader"
@@ -10,6 +10,7 @@ import Form from "../../../reusable/form"
 import LazyLoadImage from "../../../reusable/LazyLoadImage"
 import { updateProfile } from "./form"
 import { getMyOrderlist } from "../../../redux/action/orderAction"
+import { toast } from "react-toastify"
 
 const MyOrder = ({ myOrderList, loading }: { myOrderList: any[]; loading: boolean }) => {
 	const [btnLoading, setBtnLoading] = useState(false)
@@ -64,7 +65,7 @@ const MyOrder = ({ myOrderList, loading }: { myOrderList: any[]; loading: boolea
 											className="px-4 py-2 bg-red-500 w-[220px] text-white rounded-md shadow hover:bg-red-600 focus:outline-none"
 											onClick={() => handleCancelRequest(order?._id)}
 										>
-											Request Cancellation
+											Request For Cancellation
 										</button>
 									))}
 							</div>
@@ -129,7 +130,9 @@ const UpdateMyProfile = () => {
 		<div className="w-full flex flex-col py-2 items-center h-fit bg-white">
 			<div className="relative">
 				<LazyLoadImage
-					src={user?.profileImg?.URL}
+					src={
+						user?.profileImg?.URL ? user?.profileImg?.URL : "https://cdn-icons-png.flaticon.com/512/9385/9385289.png"
+					}
 					className="w-[200px] max-sm:w-[150px] h-[200px] max-sm:h-[150px] object-cover rounded-full shadow-md"
 					alt="userImg.jpg"
 				/>
@@ -192,8 +195,17 @@ const MyProfile = () => {
 	})
 
 	const { myOrderList, loading } = useAppSelector((state) => state.orders)
+	const { accessToken } = useAppSelector((state) => state.users)
 	const dispatch = useAppDispatch() // Destructure `myOrder` from the state
 	const location = useLocation() // Destructure `myOrder` from the state
+	const navigate = useNavigate() // Destructure `myOrder` from the state
+
+	useEffect(() => {
+		if (!accessToken) {
+			toast.error("Please Login First")
+			return navigate("/login")
+		}
+	}, [accessToken])
 
 	useEffect(() => {
 		if (location?.state?.myOrder) {

@@ -141,6 +141,7 @@ export const {
 	singleUserSuccess,
 	singleUserFail,
 	// for client
+	updateAccessToken,
 	uploadProfileAndPrescriptionImgStart,
 	uploadProfileAndPrescriptionImgSuccess,
 	uploadProfileAndPrescriptionImgFail,

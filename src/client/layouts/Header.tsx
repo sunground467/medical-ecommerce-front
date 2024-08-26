@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../redux/store"
 import { getAllCategories, getAllSubCategories } from "../../redux/action/categoryAction"
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa"
@@ -7,11 +7,13 @@ import { useNavigate } from "react-router-dom"
 import { logout, myProfile } from "../../redux/action/userAction"
 import { CiLogout } from "react-icons/ci"
 import { MdDashboard } from "react-icons/md"
+import { getAllProducts } from "../../redux/action/productAction"
 
 const Header = () => {
 	const { categoryLoaded, subCategoryLoaded } = useAppSelector((state) => state.category)
 	const { user } = useAppSelector((state) => state.users)
 	const { cart } = useAppSelector((state) => state.cart)
+	const [input, setInput] = useState("")
 
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
@@ -29,8 +31,18 @@ const Header = () => {
 		}
 	}, [])
 
-	const logoutHandler = () => {
-		dispatch(logout())
+	useEffect(() => {
+		const categoryName = "medical"
+		let interval = setTimeout(() => {
+			dispatch(getAllProducts(input, 1, 10, categoryName))
+		}, 1500)
+
+		return () => clearTimeout(interval)
+	}, [input])
+
+	const logoutHandler = async() => {
+		await dispatch(logout())
+		navigate("/")
 	}
 	return (
 		<div className="w-full sticky top-0 z-[50] grid grid-cols-12 py-4 justify-evenly items-center bg-white border border-l-0 border-t-0 border-r-0 border-b-2 shadow">
@@ -47,6 +59,7 @@ const Header = () => {
 						type="text"
 						className="bg-transparent outline-none border-none"
 						placeholder="search for medicine . . "
+						onChange={(e) => setInput(e.target?.value)}
 					/>
 				</div>
 			</div>

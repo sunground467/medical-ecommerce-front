@@ -1,10 +1,12 @@
-import React, { Suspense } from "react"
+import React, { Suspense, useEffect } from "react"
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
 import MainLayout from "./layouts/mainLayout"
 import ClientMainLayout from "./client/layouts/ClientMainLayout"
 import ScrollToTop from "./utils/ScrollToTop"
 import Loader from "./component/Loader/Loader"
+import { useAppDispatch } from "./redux/store"
+import { updateAccessToken } from "./redux/reducer/userReducer"
 
 // Lazy-loaded routes
 const Login = React.lazy(() => import("./pages/account/Login"))
@@ -32,6 +34,12 @@ const MyProfile = React.lazy(() => import("./client/pages/my-profile/MyProfile")
 const Cart = React.lazy(() => import("./client/pages/cart/Cart"))
 
 const App = () => {
+	const dispatch = useAppDispatch()
+	useEffect(() => {
+		const token = JSON.parse(localStorage.getItem("token") as string)
+		dispatch(updateAccessToken(token))
+	}, [])
+
 	return (
 		<div>
 			<ToastContainer />

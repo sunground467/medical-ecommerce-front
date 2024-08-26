@@ -7,11 +7,13 @@ import Loader from "../../../component/Loader/Loader"
 import axiosInstance from "../../../component/interceptor/interceptor"
 import { createNewOrder, getMyOrderlist } from "../../../redux/action/orderAction"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 const Cart = () => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [amount, setAmount] = useState<number>(0)
 	const { cart } = useAppSelector((state) => state.cart)
+	const { accessToken } = useAppSelector((state) => state.users)
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
 	const changeQty = (_id: string, quantity: number) => {
@@ -36,6 +38,11 @@ const Cart = () => {
 
 	const paymentHandler = async () => {
 		try {
+			if (!accessToken) {
+				toast.error("Please Login First")
+				return navigate("/login")
+			}
+
 			setLoading(true)
 			let orderDetail = cart?.map((c) => ({
 				_id: c?._id,
