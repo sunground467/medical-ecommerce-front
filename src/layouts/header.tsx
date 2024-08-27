@@ -1,15 +1,28 @@
+import { useEffect } from "react"
 import { CiMenuFries } from "react-icons/ci"
 import { FaUserCircle } from "react-icons/fa"
 import { IoMdPower } from "react-icons/io"
 import { IoHome, IoNotifications, IoSettings } from "react-icons/io5"
 import { useNavigate } from "react-router-dom"
+import { logout } from "../redux/action/userAction"
+import { useAppDispatch } from "../redux/store"
 
 const Header = ({ setToggle }: any) => {
 	const navigate = useNavigate()
+	const dispatch = useAppDispatch()
 
-	const logoutHandler = () => {
-		localStorage.removeItem("token")
-		navigate("/login")
+	// const { accessToken } = useAppSelector((state) => state.users)
+
+	useEffect(() => {
+		const token = JSON.parse(localStorage.getItem("token") as string)
+		if (!token) {
+			navigate("/login")
+		}
+	}, [])
+
+	const logoutHandler = async () => {
+		await dispatch(logout())
+		navigate('/login')
 	}
 
 	return (
@@ -22,7 +35,7 @@ const Header = ({ setToggle }: any) => {
 			</div>
 			<div className="flex justify-center items-center gap-4">
 				<button>
-					<IoHome onClick={()=>navigate('/')} fontSize={24} color="gray" />
+					<IoHome onClick={() => navigate("/")} fontSize={24} color="gray" />
 				</button>
 				<button>
 					<IoSettings fontSize={24} color="gray" />

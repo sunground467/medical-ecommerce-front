@@ -27,6 +27,8 @@ const Header = () => {
 	useEffect(() => {
 		if (accessToken) {
 			dispatch(myProfile())
+		} else {
+			navigate("/")
 		}
 	}, [accessToken])
 
@@ -41,7 +43,6 @@ const Header = () => {
 
 	const logoutHandler = async () => {
 		await dispatch(logout())
-		navigate("/")
 	}
 	return (
 		<div className="w-full sticky top-0 z-[50] grid grid-cols-12 py-4 justify-evenly items-center bg-white border border-l-0 border-t-0 border-r-0 border-b-2 shadow">
