@@ -62,7 +62,7 @@ const MyOrder = ({ myOrderList, loading }: { myOrderList: any[]; loading: boolea
 										</button>
 									) : (
 										<button
-											className="px-4 py-2 bg-red-500 w-[220px] text-white rounded-md shadow hover:bg-red-600 focus:outline-none"
+											className="px-0 py-2 bg-red-500 w-[230px] text-white rounded-md shadow hover:bg-red-600 focus:outline-none"
 											onClick={() => handleCancelRequest(order?._id)}
 										>
 											Request For Cancellation

@@ -37,7 +37,9 @@ const App = () => {
 	const dispatch = useAppDispatch()
 	useEffect(() => {
 		const token = JSON.parse(localStorage.getItem("token") as string)
-		dispatch(updateAccessToken(token))
+		if (token) {
+			dispatch(updateAccessToken(token))
+		}
 	}, [])
 
 	return (
