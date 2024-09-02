@@ -6,6 +6,7 @@ interface OrderState {
 	myOrderList: any[]
 	openModal: boolean
 	allOrders: any[]
+	allSales: any[]
 	ordersCount: any
 	createdAtData: any
 	perWeekOrder: any
@@ -17,6 +18,7 @@ const initialState: OrderState = {
 	myOrderList: [],
 	openModal: false,
 	allOrders: [],
+	allSales: [],
 	ordersCount: {},
 	createdAtData: {},
 	perWeekOrder: {}
@@ -26,6 +28,16 @@ const orderSlice = createSlice({
 	name: "order",
 	initialState,
 	reducers: {
+		allSalesStart(state) {
+			state.loading = true
+		},
+		allSalesSuccess(state, action) {
+			state.loading = false
+			state.allSales = action.payload
+		},
+		allSalesFail(state) {
+			state.loading = false
+		},
 		allOrdersStart(state) {
 			state.loading = true
 		},
@@ -125,6 +137,9 @@ const orderSlice = createSlice({
 })
 
 export const {
+	allSalesStart,
+	allSalesSuccess,
+	allSalesFail,
 	allOrdersStart,
 	allOrdersSuccess,
 	allOrdersFail,

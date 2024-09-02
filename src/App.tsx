@@ -22,6 +22,7 @@ const AddEmploye = React.lazy(() => import("./pages/users/addEmploye"))
 const AllUsers = React.lazy(() => import("./pages/users/allUsers"))
 const EditUsers = React.lazy(() => import("./pages/users/editUsers"))
 const Employee = React.lazy(() => import("./pages/users/employee"))
+const AllSales = React.lazy(() => import("./pages/sales/AllSales"))
 const AllOrders = React.lazy(() => import("./pages/orders/allOrders"))
 const SingleOrder = React.lazy(() => import("./pages/orders/singleOrder"))
 
@@ -328,6 +329,20 @@ const App = () => {
 									}
 								>
 									<AllOrders />
+								</Suspense>
+							}
+						/>
+						<Route
+							path="all-sales"
+							element={
+								<Suspense
+									fallback={
+										<div className="w-full flex justify-center items-center h-[500px]">
+											<Loader />
+										</div>
+									}
+								>
+									<AllSales />
 								</Suspense>
 							}
 						/>

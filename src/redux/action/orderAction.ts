@@ -4,29 +4,32 @@ import {
 	allOrdersFail,
 	allOrdersStart,
 	allOrdersSuccess,
-	getOrderByWeeksFail,
-	getOrderByWeeksStart,
-	getOrderByWeeksSuccess,
-	ordersCountFail,
-	ordersCountStart,
-	ordersCountSuccess,
-	returnCreatedAtDataFail,
-	returnCreatedAtDataStart,
-	returnCreatedAtDataSuccess,
-	updateOrderStatusFail,
-	updateOrderStatusStart,
-	updateOrderStatusSuccess,
+	allSalesFail,
+	allSalesStart,
+	allSalesSuccess,
 	createPaymentFail,
 	createPaymentStart,
 	createPaymentSuccess,
+	getOrderByWeeksFail,
+	getOrderByWeeksStart,
+	getOrderByWeeksSuccess,
 	myOrderListFail,
 	myOrderListStart,
 	myOrderListSuccess,
 	newOrderFail,
 	newOrderStart,
 	newOrderSuccess,
+	ordersCountFail,
+	ordersCountStart,
+	ordersCountSuccess,
+	returnCreatedAtDataFail,
+	returnCreatedAtDataStart,
+	returnCreatedAtDataSuccess,
 	updateMyOrderStatusFail,
-	updateMyOrderStatusSuccess
+	updateMyOrderStatusSuccess,
+	updateOrderStatusFail,
+	updateOrderStatusStart,
+	updateOrderStatusSuccess
 } from "../reducer/orderReducer"
 
 export const getAllOrders =
@@ -204,3 +207,17 @@ export const updateMyOrderStatus =
 			dispatch(updateMyOrderStatusFail())
 		}
 	}
+
+export const getAllSales = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch(allSalesStart())
+			const { data } = await axiosInstance.get("/all-sales")
+			if (data) {
+				dispatch(allSalesSuccess(data?.allSales))
+			}
+		} catch (error) {
+			dispatch(allSalesFail())
+		}
+	}
+}
