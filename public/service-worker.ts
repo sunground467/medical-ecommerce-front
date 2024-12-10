@@ -6,6 +6,9 @@ const urlsToCache = [
 	"/myProfile",
 	"/search-product",
 	"/dashboard",
+	"/cart",
+	"/login",
+	"/signup",
 	"/styles.css", // Static CSS
 	"/main.js", // Main JS file
 	"/vite.svg" // Static assets
@@ -43,7 +46,7 @@ self.addEventListener("fetch", (event: any) => {
 				if (response) {
 					return response
 				}
-         console.log('navigatore',navigator)
+				console.log("navigatore", navigator)
 				// If not cached and the user is offline
 				if (!navigator.onLine) {
 					// Show an alert that something went wrong when offline
