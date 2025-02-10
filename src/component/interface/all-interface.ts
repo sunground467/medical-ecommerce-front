@@ -1,5 +1,11 @@
 import { ColumnType, InputType } from "../enums/enum"
 
+export interface APIResponse<T> {
+	success: boolean;
+	message?: string;
+	data: T;
+  }
+
 export interface SideNavType {
 	label: string
 	route?: string

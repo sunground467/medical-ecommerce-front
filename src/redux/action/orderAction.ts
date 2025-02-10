@@ -26,152 +26,113 @@ import {
 	returnCreatedAtDataStart,
 	returnCreatedAtDataSuccess,
 	updateMyOrderStatusFail,
+	updateMyOrderStatusStart,
 	updateMyOrderStatusSuccess,
 	updateOrderStatusFail,
 	updateOrderStatusStart,
 	updateOrderStatusSuccess
 } from "../reducer/orderReducer"
+import { ApiHandler } from "../../utils/apiHandler"
 
-export const getAllOrders =
-	(search: string, page: number, limit: number) =>
-	async (
-		dispatch: (arg0: {
-			payload: string | undefined
-			type: "order/allOrdersStart" | "order/allOrdersSuccess" | "order/allOrdersFail"
-		}) => void
-	) => {
-		try {
-			dispatch(allOrdersStart())
-			const url = search
-				? `/all-orders?search=${search}&page=${page}&limit=${limit}`
-				: `/all-orders?page=${page}&limit=${limit}`
+export const getAllOrders = (search: string, page: number, limit: number) => async (dispatch: Dispatch) => {
+	const url = search ? `/all-orders?search=${search}&page=${page}&limit=${limit}` : `/all-orders?page=${page}&limit=${limit}`
+	return ApiHandler(
+		async () => {
 			const { data } = await axiosInstance.get(url)
-			if (data) dispatch(allOrdersSuccess(data?.allOrders))
-		} catch (error) {
-			dispatch(allOrdersFail())
-		}
-	}
+			return data?.allOrders
+		},
+		dispatch,
+		() => allOrdersStart(),
+		(data) => allOrdersSuccess(data),
+		() => allOrdersFail()
+	)
+}
 
-export const getAllOrdersCount =
-	(startDate: any, endDate: any) =>
-	async (
-		dispatch: (arg0: {
-			payload: string | undefined
-			type: "order/ordersCountStart" | "order/ordersCountSuccess" | "order/ordersCountFail"
-		}) => void
-	) => {
-		try {
-			dispatch(ordersCountStart())
-
+export const getAllOrdersCount = (startDate: any, endDate: any) => async (dispatch: Dispatch) => {
+	return ApiHandler(
+		async () => {
 			const { data } = await axiosInstance.get(`/order-status-count/${startDate}/${endDate}`, {
 				redundantAPICall: false
 			} as any)
-			if (data) dispatch(ordersCountSuccess(data?.results))
-		} catch (error) {
-			dispatch(ordersCountFail())
-		}
-	}
+			return data?.results
+		},
+		dispatch,
+		() => ordersCountStart(),
+		(data) => ordersCountSuccess(data),
+		() => ordersCountFail()
+	)
+}
 
-export const returnCreatedAtData =
-	(year?: string) =>
-	async (
-		dispatch: (args0: {
-			payload: string | undefined
-			type: "order/returnCreatedAtDataStart" | "order/returnCreatedAtDataSuccess" | "order/returnCreatedAtDataFail"
-		}) => void
-	) => {
-		try {
-			dispatch(returnCreatedAtDataStart())
-			const url = year ? `/created-at-data/${year}` : `/created-at-data`
+export const returnCreatedAtData = (year?: string) => async (dispatch: Dispatch) => {
+	const url = year ? `/created-at-data/${year}` : `/created-at-data`
+	return ApiHandler(
+		async () => {
 			const { data } = await axiosInstance.get(url)
-			if (data) dispatch(returnCreatedAtDataSuccess(data?.createdAtData))
-		} catch (error) {
-			dispatch(returnCreatedAtDataFail())
-		}
-	}
+			return data?.createdAtData
+		},
+		dispatch,
+		() => returnCreatedAtDataStart(),
+		(data) => returnCreatedAtDataSuccess(data),
+		() => returnCreatedAtDataFail()
+	)
+}
 
-export const updateOrderStatus =
-	(form: any) =>
-	async (
-		dispatch: (args0: {
-			payload: string | undefined
-			type: "order/updateOrderStatusStart" | "order/updateOrderStatusSuccess" | "order/updateOrderStatusFail"
-		}) => void
-	) => {
-		try {
-			dispatch(updateOrderStatusStart())
-			const { data } = await axiosInstance.patch(`/admin-update-order/${form?.id}`, form)
-			if (data) dispatch(updateOrderStatusSuccess())
-		} catch (error) {
-			dispatch(updateOrderStatusFail())
-		}
-	}
+export const updateOrderStatus = (form: any) => async (dispatch: Dispatch) => {
+	return ApiHandler(
+		() => axiosInstance.patch(`/admin-update-order/${form?.id}`, form),
+		dispatch,
+		() => updateOrderStatusStart(),
+		() => updateOrderStatusSuccess(),
+		() => updateOrderStatusFail()
+	)
+}
 
-export const getOrdersByWeeks =
-	(dateArray: any[]) =>
-	async (
-		dispatch: (args0: {
-			payload: string | undefined
-			type: "order/getOrderByWeeksStart" | "order/getOrderByWeeksSuccess" | "order/getOrderByWeeksFail"
-		}) => void
-	) => {
-		try {
-			dispatch(getOrderByWeeksStart())
+export const getOrdersByWeeks = (dateArray: any[]) => async (dispatch: Dispatch) => {
+	return ApiHandler(
+		async () => {
 			const { data } = await axiosInstance.post("/get-allOrders-by-weeks", { dateArray })
-			dispatch(getOrderByWeeksSuccess({ pending: data?.pending, delivered: data?.delivered, ongoing: data?.ongoing }))
-		} catch (error) {
-			dispatch(getOrderByWeeksFail())
-		}
-	}
+			return data
+		},
+		dispatch,
+		() => getOrderByWeeksStart(),
+		(data) => getOrderByWeeksSuccess({ pending: data?.pending, delivered: data?.delivered, ongoing: data?.ongoing }),
+		() => getOrderByWeeksFail()
+	)
+}
 
 // for client
 
-export const createNewOrder =
-	(orderItems: any[]) =>
-	async (
-		dispatch: (args0: {
-			payload: string | undefined
-			type: "order/newOrderStart" | "order/newOrderSuccess" | "order/newOrderFail"
-		}) => void
-	) => {
-		try {
-			dispatch(newOrderStart())
+export const createNewOrder = (orderItems: any[]) => async (dispatch: Dispatch) => {
+	return ApiHandler(
+		async () => {
 			const { data } = await axiosInstance.post("/new-order", { orderItems })
-			if (data) {
-				dispatch(newOrderSuccess(data?.newOrder))
-			}
-		} catch (error) {
-			dispatch(newOrderFail())
-		}
-	}
-export const createPayment =
-	(orderId: string, paymentMethod: string) =>
-	async (
-		dispatch: (args0: {
-			payload: string | undefined
-			type: "order/createPaymentStart" | "order/createPaymentSuccess" | "order/createPaymentFail"
-		}) => void
-	) => {
-		try {
-			dispatch(createPaymentStart())
-			const { data } = await axiosInstance.patch("/update-payment-methode", {
+			return data?.newOrder
+		},
+		dispatch,
+		() => newOrderStart(),
+		(data) => newOrderSuccess(data),
+		() => newOrderFail()
+	)
+}
+export const createPayment = (orderId: string, paymentMethod: string) => async (dispatch: Dispatch) => {
+	return ApiHandler(
+		() =>
+			axiosInstance.patch("/update-payment-methode", {
 				orderId,
 				paymentMethod
-			})
-			if (data) {
-				dispatch(createPaymentSuccess())
-			}
-		} catch (error) {
-			dispatch(createPaymentFail())
-		}
-	}
+			}),
+		dispatch,
+		() => createPaymentStart(),
+		() => createPaymentSuccess(),
+		() => createPaymentFail()
+	)
+}
 
 export const getMyOrderlist = () => {
 	return async (dispatch: Dispatch) => {
-		try {
-			dispatch(myOrderListStart())
-			const { data } = await axiosInstance.get(`/my-order`)
-			if (data) {
+		return ApiHandler(
+			async () => {
+				const { data } = await axiosInstance.get(`/my-order`)
 				const myOrder = data?.myOrder?.map((my: any) => ({
 					...my,
 					orderItems: my?.orderItems?.map((o: any) => ({
@@ -179,45 +140,41 @@ export const getMyOrderlist = () => {
 						prodImg: o?.prodImg?.url
 					}))
 				}))
-				dispatch(myOrderListSuccess(myOrder))
-			}
-		} catch (error) {
-			dispatch(myOrderListFail())
-		}
+				return myOrder
+			},
+			dispatch,
+			() => myOrderListStart(),
+			(data) => myOrderListSuccess(data),
+			() => myOrderListFail()
+		)
 	}
 }
 
-export const updateMyOrderStatus =
-	(id: string, orderStatus: string) =>
-	async (
-		dispatch: (args0: {
-			payload: string | undefined
-			type: "order/updateMyOrderStatusStart" | "order/updateMyOrderStatusSuccess" | "order/updateMyOrderStatusFail"
-		}) => void
-	) => {
-		try {
-			dispatch(updateMyOrderStatusFail())
-			const { data } = await axiosInstance.patch(`/update-myorder-status/${id}`, {
+export const updateMyOrderStatus = (id: string, orderStatus: string) => async (dispatch: Dispatch) => {
+	return ApiHandler(
+		() =>
+			axiosInstance.patch(`/update-myorder-status/${id}`, {
 				orderStatus
-			})
-			if (data) {
-				dispatch(updateMyOrderStatusSuccess())
-			}
-		} catch (error) {
-			dispatch(updateMyOrderStatusFail())
-		}
-	}
+			}),
+		dispatch,
+		() => updateMyOrderStatusStart(),
+		() => updateMyOrderStatusSuccess(),
+		() => updateMyOrderStatusFail()
+	)
+}
 
 export const getAllSales = () => {
 	return async (dispatch: Dispatch) => {
-		try {
-			dispatch(allSalesStart())
-			const { data } = await axiosInstance.get("/all-sales")
-			if (data) {
-				dispatch(allSalesSuccess(data?.allSales))
-			}
-		} catch (error) {
-			dispatch(allSalesFail())
-		}
+		return ApiHandler(
+			async () => {
+				const { data } = await axiosInstance.get("/all-sales")
+				return data?.allSales
+			},
+			dispatch,
+			() => allSalesStart(),
+			(data) => allSalesSuccess(data),
+			() => allSalesFail()
+		)
 	}
 }
+// 224 lines used before

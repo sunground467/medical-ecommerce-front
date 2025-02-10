@@ -1,3 +1,4 @@
+import { Dispatch } from "@reduxjs/toolkit"
 import axiosInstance from "../../component/interceptor/interceptor"
 import {
 	addStockInProdFail,
@@ -19,133 +20,91 @@ import {
 	updateSingleProductListStart,
 	updateSingleProductListSuccess
 } from "../reducer/prouctReducer"
-export const createProduct =
-	(form: any) =>
-	async (
-		dispatch: (arg0: {
-			payload: string | undefined
-			type: "product/createProductStart" | "product/createProductSuccess" | "product/createProductFail"
-		}) => void
-	) => {
-		try {
-			dispatch(createProductStart())
+import { ApiHandler } from "../../utils/apiHandler"
+export const createProduct = (form: any) => async (dispatch: Dispatch) => {
+	return ApiHandler(
+		async () => {
 			const { data } = await axiosInstance.post(`/createProduct`, form)
-			if (data) {
-				dispatch(createProductSuccess({ productId: data?.productId, productName: data?.productName }))
-			}
-		} catch (error: any) {
-			dispatch(createProductFail())
-		}
-	}
-export const addStockInProd =
-	(form: any) =>
-	async (
-		dispatch: (arg0: {
-			payload: string | undefined
-			type: "product/addStockInProdStart" | "product/addStockInProdSuccess" | "product/addStockInProdFail"
-		}) => void
-	) => {
-		try {
-			dispatch(addStockInProdStart())
-			const { data } = await axiosInstance.post(`/addStockInProd`, form)
-			if (data) {
-				dispatch(addStockInProdSuccess())
-			}
-		} catch (error: any) {
-			dispatch(addStockInProdFail())
-		}
-	}
+			return data
+		},
+		dispatch,
+		() => createProductStart(),
+		(d) => createProductSuccess({ productId: d?.productId, productName: d?.productName }),
+		() => createProductFail()
+	)
+}
+export const addStockInProd = (form: any) => async (dispatch: Dispatch) => {
+	return ApiHandler(
+		() => axiosInstance.post(`/addStockInProd`, form),
+		dispatch,
+		() => addStockInProdStart(),
+		() => addStockInProdSuccess(),
+		() => addStockInProdFail()
+	)
+}
 
 export const getAllProducts =
-	(search: string, page: number, limit: number, categoryName?: string) =>
-	async (
-		dispatch: (arg0: {
-			payload: string | undefined
-			type: "product/getAllProductListStart" | "product/getAllProductListSuccess" | "product/getAllProductListFail"
-		}) => void
-	) => {
-		try {
-			dispatch(getAllProductListStart())
-			let url = ""
-			if (search) url = `/getAllProductList?search=${search}&page=${page}&limit=${limit}`
-			else if (categoryName && search)
-				url = `/getAllProductList/${categoryName}?search=${search}&page=${page}&limit=${limit}`
-			else if (categoryName && !search) url = `/getAllProductList/${categoryName}?page=${page}&limit=${limit}`
-			else url = `/getAllProductList?page=${page}&limit=${limit}`
-			const { data } = await axiosInstance.get(url, { redundantAPICall: false } as any)
-			if (data) {
+	(search: string, page: number, limit: number, categoryName?: string) => async (dispatch: Dispatch) => {
+		let url = ""
+		if (search) url = `/getAllProductList?search=${search}&page=${page}&limit=${limit}`
+		else if (categoryName && search) url = `/getAllProductList/${categoryName}?search=${search}&page=${page}&limit=${limit}`
+		else if (categoryName && !search) url = `/getAllProductList/${categoryName}?page=${page}&limit=${limit}`
+		else url = `/getAllProductList?page=${page}&limit=${limit}`
+		return ApiHandler(
+			async () => {
+				const { data } = await axiosInstance.get(url, { redundantAPICall: false } as any)
+
 				const allProduct = await data?.allProducts?.results?.map((prod: any) => ({
 					...prod,
 					prodImg: prod.prodImg.url,
 					stock: prod.stock.reduce((acc: any, curr: any) => acc + curr.quantity, 0)
 				}))
-				dispatch(getAllProductListSuccess(allProduct))
-			}
-		} catch (error: any) {
-			dispatch(getAllProductListFail())
-		}
+				return allProduct
+			},
+			dispatch,
+			() => getAllProductListStart(),
+			(d) => getAllProductListSuccess(d),
+			() => getAllProductListFail()
+		)
 	}
 
-export const getSingleProductList =
-	(id: string) =>
-	async (
-		dispatch: (arg0: {
-			payload: string | undefined
-			type: "product/getSingleProductListStart" | "product/getSingleProductListSuccess" | "product/getSingleProductListFail"
-		}) => void
-	) => {
-		try {
-			dispatch(getSingleProductListStart())
+export const getSingleProductList = (id: string) => async (dispatch: Dispatch) => {
+	return ApiHandler(
+		async () => {
 			const { data } = await axiosInstance.get(`/getSingleProductList/${id}`, { redundantAPICall: false } as any)
-			if (data)
-				dispatch(
-					getSingleProductListSuccess({
-						singleProduct: data?.singleProduct,
-						availableStock: data?.availableStock,
-						outOfStock: data?.outOfStock
-					})
-				)
-		} catch (error) {
-			dispatch(getSingleProductListFail())
-		}
-	}
+			return data
+		},
+		dispatch,
+		() => getSingleProductListStart(),
+		(d) =>
+			getSingleProductListSuccess({
+				singleProduct: d?.singleProduct,
+				availableStock: d?.availableStock,
+				outOfStock: d?.outOfStock
+			}),
+		() => getSingleProductListFail()
+	)
+}
 
-export const updateSingleProductList =
-	(id: string, form: any) =>
-	async (
-		dispatch: (arg0: {
-			payload: string | undefined
-			type:
-				| "product/updateSingleProductListStart"
-				| "product/updateSingleProductListSuccess"
-				| "product/updateSingleProductListFail"
-		}) => void
-	) => {
-		try {
-			dispatch(updateSingleProductListStart())
-			const { data } = await axiosInstance.put(`/updateSingleProductList/${id}`, form)
-			if (data) {
-				dispatch(updateSingleProductListSuccess())
-			}
-		} catch (error: any) {
-			dispatch(updateSingleProductListFail())
-		}
-	}
+export const updateSingleProductList = (id: string, form: any) => async (dispatch: Dispatch) => {
+	return ApiHandler(
+		() => axiosInstance.put(`/updateSingleProductList/${id}`, form),
+		dispatch,
+		() => updateSingleProductListStart(),
+		() => updateSingleProductListSuccess(),
+		() => updateSingleProductListFail()
+	)
+}
 
-export const getExpiredProduct =
-	(date: number, page: number, limit: number) =>
-	async (
-		dispatch: (args0: {
-			payload: string | undefined
-			type: "product/getExpiredProductStart" | "product/getExpiredProductSuccess" | "product/getExpiredProductFail"
-		}) => void
-	) => {
-		try {
-			dispatch(getExpiredProductStart())
+export const getExpiredProduct = (date: number, page: number, limit: number) => async (dispatch: Dispatch) => {
+	return ApiHandler(
+		async () => {
 			const { data } = await axiosInstance.post(`/getExpiredProduct?page=${page}&limit=${limit}`, { date })
-
-			if (data) dispatch(getExpiredProductSuccess(data?.expiredProduct))
-		} catch (error) {
-			dispatch(getExpiredProductFail())
-		}
-	}
+			return data?.expiredProduct
+		},
+		dispatch,
+		() => getExpiredProductStart(),
+		(d) => getExpiredProductSuccess(d),
+		() => getExpiredProductFail()
+	)
+}
