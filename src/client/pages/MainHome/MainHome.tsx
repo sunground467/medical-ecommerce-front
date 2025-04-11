@@ -62,7 +62,7 @@ const MainHome = () => {
 							<div
 								onClick={() => navigate(`/categoryProd?category=${encodeURIComponent(sub?.subcategoryName)}`)}
 								key={i}
-								className="col-span-3 cursor-pointer flex flex-col items-center justify-start"
+								className="col-span-3 max-sm:col-span-12 cursor-pointer flex flex-col items-center justify-start"
 							>
 								<div className="w-[150px] h-[150px] mb-4">
 									<LazyLoadImage
